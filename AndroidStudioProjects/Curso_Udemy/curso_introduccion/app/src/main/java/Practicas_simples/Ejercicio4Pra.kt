@@ -12,7 +12,7 @@ fun main() {
 }
 
 class Ejercicio4_pra {
-    // Creamos un método que va a devolver el número de tesoros que hay
+    // Creamos una función que va a devolver el número de tesoros que hay
     fun contarTesoros(mapa: Array<IntArray>): Int {
         var tesoros = 0
         for (i in 0 until mapa.size) {
