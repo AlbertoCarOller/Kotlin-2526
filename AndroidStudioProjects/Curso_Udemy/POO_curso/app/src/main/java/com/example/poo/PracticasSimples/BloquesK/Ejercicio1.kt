@@ -10,7 +10,7 @@ fun main() {
     var lista = mutableListOf<Int>(1,2,3,4,5).also {
         it.add(6)
     }
-    // El bloque let se ejecuta si el nombre no es null
+    // El bloque let se ejecuta si el objeto no es null
     var nombre1: String? = "Xavi"
     nombre1?.let {
         println("El nombre tiene ${it.length} caracteres")

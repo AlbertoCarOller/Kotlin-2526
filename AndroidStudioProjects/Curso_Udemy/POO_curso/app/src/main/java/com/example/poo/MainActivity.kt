@@ -57,5 +57,9 @@ class MainActivity : ComponentActivity() {
         pokemon.setAttackPower(1f)
         // Imprimimos sus atributos
         println("Nombre: ${pokemon.getName()}, Ataque: ${pokemon.getAttackPower()}, Vida: ${pokemon.getLife()}")
+
+        // Creamos  un pokemon de tierra
+        var pokemonTierra = EarthPokemon("Pepe", 30.5f, 90.5f, 20, 3)
+        pokemonTierra.despedirse()
     }
 }

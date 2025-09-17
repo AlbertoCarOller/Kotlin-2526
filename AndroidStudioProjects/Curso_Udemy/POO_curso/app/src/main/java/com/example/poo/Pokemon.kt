@@ -87,5 +87,19 @@ class Firepokemon(
     private var ballTemperature: Int = 90
 ) : Pokemon(name, attackPower, life)
 
-class EarthPokemon(name: String, attackPower: Float, life: Float, private var depth: Int)
-    : Pokemon(name, attackPower, life)
+class EarthPokemon(
+    name: String, attackPower: Float, life: Float, private var depth: Int,
+    override var dato: Int
+) : Pokemon(name, attackPower, life), sayBye
+
+// Creamos una interface
+interface sayBye {
+
+    // Creamos una variable
+    var dato: Int
+
+    // Creamos una función que va a imprimir una despedida
+    fun despedirse() {
+        println("Hasta luego papi")
+    }
+}
