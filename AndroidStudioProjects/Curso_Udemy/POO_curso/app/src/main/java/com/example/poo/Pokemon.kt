@@ -86,3 +86,6 @@ class Firepokemon(
     life: Float,
     private var ballTemperature: Int = 90
 ) : Pokemon(name, attackPower, life)
+
+class EarthPokemon(name: String, attackPower: Float, life: Float, private var depth: Int)
+    : Pokemon(name, attackPower, life)
