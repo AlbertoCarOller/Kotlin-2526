@@ -1,0 +1,35 @@
+El ejercicio: El sistema de cálculo de impuestos 💰
+Imagina que estás construyendo un sistema de cálculo de impuestos para diferentes tipos
+de personas. Vas a usar una interfaz para definir la obligación de pagar impuestos y
+diferentes clases para los tipos de personas.
+
+Paso 1: La Interfaz Contribuyente
+Crea una interfaz llamada Contribuyente.
+Esta interfaz debe tener un método calcularImpuesto() que devuelva un Double.
+
+Paso 2: La Clase Base Persona
+Crea una clase open llamada Persona.
+Debe tener las siguientes propiedades: nombre (String) y ingresoAnual (Double).
+
+Paso 3: La Clase Empleado que hereda e implementa
+Crea una clase llamada Empleado que herede de Persona e implemente la interfaz Contribuyente.
+Añade una propiedad adicional deducciones (Double) a esta clase.
+Sobrescribe el método calcularImpuesto(). La lógica para un empleado es: (ingresoAnual - deducciones) * 0.15.
+
+Paso 4: La Clase Autonomo que hereda e implementa
+Crea una clase llamada Autonomo que herede de Persona e implemente la interfaz Contribuyente.
+Añade una propiedad adicional gastos (Double) a esta clase.
+Sobrescribe el método calcularImpuesto(). La lógica para un autónomo es: (ingresoAnual - gastos) * 0.20.
+
+Paso 5: La Clase GestorImpuestos
+Crea una clase llamada GestorImpuestos.
+Dentro de esta clase, crea un método procesarImpuestos(contribuyentes: List<Contribuyente>) que no devuelva nada.
+Este método debe recorrer la lista de Contribuyente que recibe como parámetro y, para cada uno:
+Llamar al método calcularImpuesto().
+Imprimir un mensaje que muestre el nombre del contribuyente y el impuesto que debe pagar.
+
+Paso 6: La ejecución en main
+En la función main, crea instancias de Empleado y Autonomo.
+Mete a estos objetos en una lista de tipo List<Contribuyente>.
+Crea una instancia de GestorImpuestos.
+Llama al método procesarImpuestos() pasándole la lista.

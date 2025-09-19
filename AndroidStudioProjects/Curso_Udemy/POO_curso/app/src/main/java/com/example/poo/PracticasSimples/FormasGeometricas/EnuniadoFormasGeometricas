@@ -1,0 +1,26 @@
+El ejercicio: El sistema de formas geométricas 📐
+
+Imagina que necesitas un sistema para manejar diferentes formas geométricas.
+Todas las formas tienen un área, pero la forma de calcularla varía. Vas a usar una interfaz para
+definir el comportamiento y herencia para las formas concretas.
+
+Paso 1: La Interfaz Calculable
+Crea una interfaz llamada Calculable.
+Debe tener un método calcularArea() que devuelva un Double.
+
+Paso 2: La Clase Base Forma
+Crea una clase open llamada Forma.
+Esta clase tendrá una única propiedad: nombre (String).
+
+Paso 3: Clases que Heredan e Implementan
+Crea una clase llamada Cuadrado que herede de Forma e implemente la interfaz Calculable.
+Dale una propiedad adicional: lado (Double).
+Sobrescribe el método calcularArea() y haz que devuelva el área de un cuadrado (lado * lado).
+Crea una segunda clase, Circulo, que herede de Forma e implemente la interfaz Calculable.
+Dale una propiedad adicional: radio (Double).
+Sobrescribe el método calcularArea(). Recuerda que el área de un círculo es π * radio * radio.
+
+Paso 4: La ejecución en main
+En la función main, crea una instancia de la clase Cuadrado y otra de la clase Circulo.
+Llama al método calcularArea() de cada objeto e imprime los resultados para mostrar cómo cada uno
+calcula su área de forma diferente.

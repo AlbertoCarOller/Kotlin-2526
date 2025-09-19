@@ -1,0 +1,33 @@
+El Ejercicio: El Gestor de Notificaciones 📱
+Imagina que estás construyendo un sistema de notificaciones para una aplicación.
+Vas a tener un tipo de notificación base, diferentes tipos de notificaciones y
+un objeto singleton para gestionar todo el proceso.
+
+Paso 1: La Interfaz Notificable
+Crea una interfaz llamada Notificable.
+Debe tener un método enviar() que no devuelva nada.
+
+Paso 2: La Clase Base Notificacion
+Crea una clase open llamada Notificacion.
+Dale una única propiedad: mensaje (String).
+Añade un método open llamado obtenerMensaje() que devuelva el mensaje.
+
+Paso 3: Clases que Heredan e Implementan
+Crea una clase EmailNotificacion que herede de Notificacion e implemente Notificable.
+Sobrescribe el método enviar() para que imprima un mensaje que incluya el mensaje de la
+notificación y un texto indicando que se envió por correo electrónico.
+
+Paso 4: El Singleton GestorNotificaciones
+Crea un objeto singleton llamado GestorNotificaciones.
+Dentro del singleton, crea un método llamado enviarNotificacion(notificable: Notificable).
+Este método debe simplemente llamar al método enviar() de la notificación que se le pase como parámetro.
+
+Paso 5: La Clase Anónima en main
+En la función main:
+Crea una instancia de la clase EmailNotificacion y pásala al método enviarNotificacion() de tu singleton.
+Ahora, crea una clase anónima que herede de Notificacion e implemente Notificable. Dentro de la clase anónima:
+Dale un mensaje único.
+Sobrescribe el método enviar() para que imprima un mensaje diferente y específico para este tipo
+de notificación (por ejemplo, "Mensaje enviado a través de una notificación push").
+Pasa esta instancia de la clase anónima al método enviarNotificacion() del singleton
+para ver cómo se comporta de forma diferente, sin tener que crear una clase con nombre.
