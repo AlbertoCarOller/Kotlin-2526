@@ -1,0 +1,37 @@
+El Ejercicio: El Gestor de Eventos y Participantes 📅
+Imagina que estás construyendo un sistema para gestionar eventos.
+Los eventos tienen reglas diferentes para los tipos de participantes.
+Algunos participantes son estándar y otros son VIP, lo que afecta su costo y los beneficios que reciben.
+
+Paso 1: La Interfaz Participante
+Crea una interfaz llamada Participante.
+Debe tener un método calcularCostoInscripcion() que devuelva un Double.
+También debe tener un método mostrarBeneficios() que no devuelva nada.
+
+Paso 2: La Clase Base Asistente
+Crea una clase open llamada Asistente.
+Debe tener las siguientes propiedades: nombre (String) y edad (Int).
+
+Paso 3: Las Clases que Heredan e Implementan
+Crea una clase llamada ParticipanteEstandar que herede de Asistente e implemente la interfaz Participante.
+Sobrescribe el método calcularCostoInscripcion(). El costo para un participante estándar es un valor fijo, por ejemplo, 50.0.
+Sobrescribe el método mostrarBeneficios() para que imprima un mensaje sobre los beneficios básicos que tiene el participante.
+Crea una clase llamada ParticipanteVIP que herede de Asistente e implemente la interfaz Participante.
+Sobrescribe el método calcularCostoInscripcion(). El costo para un participante VIP es mayor, por ejemplo,
+200.0, pero si es menor de 25 años, se le aplica un 20% de descuento.
+Sobrescribe el método mostrarBeneficios() para que imprima un mensaje sobre los beneficios exclusivos que tiene.
+
+Paso 4: El Gestor de Eventos
+Crea una clase llamada GestorEventos.
+Dentro de esta clase, crea una lista mutable (MutableList) que pueda almacenar objetos de tipo Participante.
+Crea un método añadirParticipante(participante: Participante) que lo agregue a la lista.
+Crea un método calcularIngresosTotales() que recorra la lista de participantes y sume el costo de
+inscripción de todos ellos, devolviendo el total.
+Crea un método mostrarListaParticipantes() que recorra la lista y llame a mostrarBeneficios() para cada uno.
+
+Paso 5: La Ejecución en main
+En la función main, crea una instancia de la clase GestorEventos.
+Crea varias instancias de ParticipanteEstandar y ParticipanteVIP con diferentes edades.
+Añade todos los participantes al gestor.
+Llama al método calcularIngresosTotales() e imprime el resultado.
+Llama al método mostrarListaParticipantes() para ver los beneficios de cada uno.
