@@ -1,0 +1,42 @@
+El Ejercicio: El Sistema de Batalla de Héroes y Villanos 🦸‍♂️🦹‍♀️
+
+Imagina que estás construyendo un motor de combate para un juego.
+Tienes personajes, pero solo los héroes y villanos pueden participar en la batalla.
+
+Paso 1: La Interfaz Atacable
+Crea una interfaz llamada Atacable.
+Debe tener dos propiedades abstractas: salud (Int) y poderDeAtaque (Int).
+También debe tener un método abstracto llamado recibirDanio(dano: Int) que
+reduzca la salud del personaje.
+
+Paso 2: La Clase Base Personaje
+Crea una clase open llamada Personaje.
+Debe tener una propiedad nombre (String).
+Añade un método llamado presentarse() que imprima el nombre del personaje.
+
+Paso 3: Las Clases que Heredan e Implementan
+Crea una clase llamada Heroe que herede de Personaje e implemente la interfaz Atacable.
+Dale un método atacar(enemigo: Atacable) que use el poderDeAtaque del héroe para
+llamar al método recibirDanio() del enemigo.
+Sobrescribe el método recibirDanio(dano: Int) para que la salud no baje de cero.
+Crea una clase llamada Villano que herede de Personaje e implemente la interfaz Atacable.
+También dale un método atacar(enemigo: Atacable).
+Sobrescribe el método recibirDanio(dano: Int) para que la salud no baje de cero.
+
+Paso 4: El GestorDeBatallas (el Singleton)
+Crea un objeto singleton llamado GestorDeBatallas.
+Dale un método iniciarCombate(atacante: Atacable, defensor: Atacable) que
+simule un turno de combate.
+Dentro de este método:
+El atacante debe llamar a su método atacar() al defensor.
+Imprime la salud restante del defensor después del ataque.
+Usa un if para comprobar si la salud del defensor es menor o igual a cero. Si es así,
+imprime un mensaje de victoria.
+
+Paso 5: La Lógica en main
+En la función main, crea una instancia de Heroe y una de Villano.
+Llama al método presentarse() de ambos personajes.
+Crea un bucle while que continúe mientras la salud del héroe y del villano sea mayor que cero.
+Dentro del bucle, haz que el GestorDeBatallas inicie un turno de combate, primero con el héroe
+atacando al villano y luego al revés.
+Termina el bucle y anuncia al ganador.

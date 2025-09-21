@@ -1,0 +1,26 @@
+El ejercicio: El Gestor de Contactos 📱
+
+Imagina que estás construyendo una aplicación simple para gestionar contactos.
+Los contactos tienen propiedades muy específicas, y necesitas una clase que sea eficiente
+para almacenar y comparar esta información.
+
+Paso 1: La data class Contacto
+Crea una data class llamada Contacto.
+Debe tener las siguientes propiedades:
+nombre (String)
+telefono (String)
+email (String)
+
+Paso 2: Crear e Interactuar con los objetos
+En la función main:
+Crea dos instancias de Contacto con los mismos datos exactos para el nombre, teléfono y email.
+ Por ejemplo, contacto1 y contacto2.
+Crea una tercera instancia de Contacto con datos diferentes. Por ejemplo, contacto3.
+Utiliza la función equals() para comparar contacto1 y contacto2. El resultado debería ser true.
+Compara contacto1 y contacto3. El resultado debería ser false.
+Imprime contacto1 directamente. Observa cómo data class genera automáticamente un método toString()
+que muestra todos los datos de forma legible.
+Crea una copia de contacto1 usando la función copy() que data class te proporciona.
+Puedes copiar el objeto y cambiar solo una de sus propiedades. Por ejemplo, cambia el email y
+guarda el resultado en una nueva variable.
+Imprime la nueva variable para verificar que la copia fue exitosa.
