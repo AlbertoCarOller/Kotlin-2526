@@ -29,6 +29,7 @@ abstract class Personaje(protected var nombre: String) : Atacable {
         return this.nombre
     }
 
+
     // Creamos una función para que se presente
     fun presentarse() {
         println("Hola, soy $nombre")
