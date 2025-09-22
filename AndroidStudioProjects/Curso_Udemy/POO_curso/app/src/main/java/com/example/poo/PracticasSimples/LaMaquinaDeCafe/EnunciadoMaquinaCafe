@@ -1,0 +1,42 @@
+El Ejercicio: La Máquina de Café y sus Ingredientes ☕️
+
+Imagina que estás programando el software para una máquina de café.
+La máquina tiene ingredientes que pueden ser líquidos o en polvo. Cada ingrediente tiene un costo
+y un método de uso diferente.
+
+Paso 1: La Interfaz Preparable
+Crea una interfaz llamada Preparable.
+Debe tener una propiedad abstracta llamada costoPorUnidad (Double).
+Debe tener un método preparar() que no devuelva nada.
+
+Paso 2: La Clase Base Ingrediente
+Crea una clase open llamada Ingrediente.
+Debe tener las siguientes propiedades: nombre (String) y cantidadEnStock (Int).
+Añade un método mostrarEstado() que imprima el nombre y la cantidad de stock del ingrediente.
+
+Paso 3: Las Clases que Heredan e Implementan
+Crea una clase llamada Liquido que herede de Ingrediente e implemente la interfaz Preparable.
+Añade una propiedad adicional temperatura (Int).
+Sobrescribe el método preparar() para que imprima un mensaje que indique que se está vertiendo
+el líquido y a qué temperatura.
+Crea una segunda clase, Polvo, que también herede
+de Ingrediente e implemente la interfaz Preparable.
+Añade una propiedad adicional esSoluble (Boolean).
+Sobrescribe el método preparar() para que imprima un mensaje sobre cómo se disuelve el polvo,
+dependiendo de si esSoluble es verdadero o falso.
+
+Paso 4: La Máquina de Café (el Singleton)
+Crea un objeto singleton llamado Cafetera.
+Dentro de este singleton, crea un método prepararBebida(ingredientes: List<Preparable>)
+que no devuelva nada.
+Este método debe recorrer la lista de ingredientes y llamar al método preparar() de cada uno.
+También debe calcular el costo total de la bebida sumando el costoPorUnidad de todos
+los ingredientes y mostrarlo.
+
+Paso 5: La Ejecución en main
+En la función main, crea instancias de Liquido (como agua o leche) y Polvo (como café o azúcar).
+Crea una lista con algunos de estos ingredientes.
+Crea una instancia de la clase Cafetera y llama a su método prepararBebida(),
+pasándole la lista de ingredientes.
+Añade algunos println() en el main para mostrar el stock inicial y final
+de los ingredientes, lo que simulará el uso.
