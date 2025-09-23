@@ -20,6 +20,6 @@ fun main() {
     println(contacto3)
 }
 
-/* Las data class son clases que solo permiten tener datos, no permite las funciones,
-* además no tenemos que definir un equals, ya que tienen uno interno */
+/* Las data class son clases que tienen funciones predefinidas, como equals, toString,
+copy, etc. El objetico principal de estas clases es almacenar información */
 data class Contacto(var nombre: String, var telefono: String, var email: String)
