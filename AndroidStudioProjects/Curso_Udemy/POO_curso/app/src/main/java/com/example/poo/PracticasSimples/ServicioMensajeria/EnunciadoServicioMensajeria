@@ -1,0 +1,39 @@
+El Ejercicio: El Gestor de Entregas de un Servicio de Mensajería 📦
+
+Imagina que estás construyendo un sistema para un servicio de mensajería. Tienes que gestionar
+diferentes tipos de paquetes que se envían por distintos medios. Cada paquete tiene un
+peso y un método de envío que afecta su costo.
+
+Paso 1: La Clase Base Paquete
+Crea una clase open llamada Paquete.
+Debe tener las siguientes propiedades: id (String) y pesoEnGramos (Double).
+Añade un método open llamado calcularCostoEnvio() que devuelva un Double.
+La implementación por defecto debe ser 0.0.
+
+Paso 2: Las Clases que Heredan
+Crea una clase llamada Documento que herede de Paquete.
+Dale una propiedad adicional llamada esConfidencial (Boolean).
+Sobrescribe el método calcularCostoEnvio(). El costo para un documento es 5.0.
+Si esConfidencial es true, añade un recargo de 10.0.
+Crea una clase llamada Caja que herede de Paquete.
+Dale una propiedad adicional llamada volumenEnCmCubicos (Double).
+Sobrescribe el método calcularCostoEnvio().
+El costo para una caja es 10.0 más 0.02 por cada gramo de peso.
+
+Paso 3: El GestorEnvios (el Singleton)
+Crea un objeto singleton llamado GestorEnvios.
+Dentro de este objeto, crea una lista mutable
+(MutableList) que pueda almacenar objetos de tipo Paquete.
+Crea un método añadirEnvio(paquete: Paquete) que añada un paquete a la lista.
+Crea un método procesarTodosLosEnvios() que recorra la lista y:
+Imprima los detalles de cada paquete (ID y peso).
+Imprima el costo de envío de cada paquete llamando a su método calcularCostoEnvio().
+Crea un método calcularCostoTotal() que sume los costos de envío de todos los paquetes
+y devuelva el total.
+
+Paso 4: La Ejecución en main
+En la función main, crea una instancia del GestorEnvios.
+Crea varias instancias de Documento y Caja con diferentes valores.
+Añade todos los paquetes al gestor.
+Llama al método procesarTodosLosEnvios() para ver los detalles y costos de cada uno.
+Finalmente, llama a calcularCostoTotal() y muestra el costo total de todos los envíos.

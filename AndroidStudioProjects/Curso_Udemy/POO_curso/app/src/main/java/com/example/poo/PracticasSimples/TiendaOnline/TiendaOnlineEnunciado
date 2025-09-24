@@ -1,0 +1,37 @@
+El Ejercicio: El Sistema de Pago de una Tienda Online 💳
+
+Imagina que estás construyendo un sistema para procesar pagos. Los diferentes métodos de pago
+tienen reglas y tarifas distintas que deben aplicarse.
+
+Paso 1: El enum class MetodoPago
+Crea un enum class llamado MetodoPago.
+Define tres valores: TARJETA, PAYPAL y TRANSFERENCIA.
+Asóciale a cada valor una propiedad val para el recargo (recargo: Double).
+
+TARJETA: 0.02 (2% de recargo)
+PAYPAL: 0.03 (3% de recargo)
+TRANSFERENCIA: 0.0 (sin recargo)
+
+Paso 2: La Interfaz Transaccionable
+Crea una interfaz llamada Transaccionable.
+Debe tener una propiedad abstracta costoTotal (Double).
+Debe tener un método aplicarRecargo(metodo: MetodoPago) que devuelva un Double.
+
+Paso 3: La Clase Compra que implementa
+Crea una data class llamada Compra.
+Debe tener propiedades para el producto (String) y el precioBase (Double).
+Haz que la clase Compra implemente la interfaz Transaccionable.
+Sobrescribe la propiedad costoTotal para que devuelva el precioBase.
+Sobrescribe el método aplicarRecargo(metodo: MetodoPago). Dentro de este método, usa una expresión
+when para aplicar el recargo del enum al costoTotal y devuelve el resultado.
+
+Paso 4: El GestorPagos (el Singleton)
+Crea un objeto singleton llamado GestorPagos.
+Dale un método procesarPago(compra: Compra, metodo: MetodoPago) que no devuelva nada.
+Dentro del método, llama al método aplicarRecargo() de la compra para obtener el precio final y,
+finalmente, imprime el resumen del pago.
+
+Paso 5: La Lógica en main
+En la función main, crea varias instancias de Compra con diferentes precios.
+Llama al GestorPagos para procesar cada compra con un MetodoPago diferente y observa cómo el
+precio final cambia según el enum que utilices.

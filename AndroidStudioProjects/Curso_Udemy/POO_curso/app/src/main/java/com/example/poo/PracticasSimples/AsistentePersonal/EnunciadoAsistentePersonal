@@ -1,0 +1,34 @@
+El Ejercicio: El Gestor de Tareas de un Asistente Personal 📋
+
+Imagina que estás construyendo un sistema para un asistente personal que te ayuda
+a organizar tu día. Tienes diferentes tipos de tareas, y el asistente debe poder filtrarlas,
+ordenarlas y procesarlas basándose en tus criterios.
+
+Paso 1: La data class Tarea
+Crea una data class llamada Tarea.
+Debe tener las siguientes propiedades:
+nombre (String)
+categoria (String, por ejemplo: "Hogar", "Trabajo", "Personal")
+prioridad (Int, del 1 al 5, donde 5 es la más alta)
+completada (Boolean)
+
+Paso 2: El GestorTareas (el Singleton)
+Crea un objeto singleton llamado GestorTareas.
+Dentro de este objeto, crea una lista mutable (MutableList) que almacene objetos de tipo Tarea.
+Añade un método agregarTarea(tarea: Tarea) que añada una tarea a la lista.
+
+Paso 3: La Lógica en main con Lambdas
+En la función main, crea varias instancias de Tarea con diferentes valores para sus propiedades.
+Luego, utiliza los métodos de las colecciones de Kotlin junto con expresiones
+lambda para realizar las siguientes operaciones:
+Filtrado (filter): Crea una nueva lista que contenga solo las tareas
+de la categoría "Trabajo". Imprime el resultado.
+Mapeo (map): Crea una nueva lista que contenga solo el nombre de las
+tareas que tienen una prioridad de 5.
+Ordenamiento (sortedByDescending): Crea una nueva lista de todas las tareas,
+ordenadas de mayor a menor prioridad.
+Combinación de operaciones: Utiliza filter y forEach en una sola línea para encontrar todas
+las tareas que no estén completadas y tengan una prioridad de 4 o 5. Para cada una, imprime un
+mensaje que diga: "¡Alerta! Tarea pendiente de alta prioridad: [nombre de la tarea]".
+Verificación (any): Usa any para verificar si hay alguna tarea en la categoría "Hogar" que esté
+completada. Imprime "true" o "false" según el resultado.
