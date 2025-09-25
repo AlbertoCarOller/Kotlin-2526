@@ -1,0 +1,45 @@
+El Ejercicio: El Sistema de Puntos de Fidelidad de un Cine 🎬🍿
+
+Imagina que estás desarrollando la lógica para calcular los puntos de fidelidad
+que ganan los clientes de un cine. La cantidad de puntos ganados depende del tipo
+de entrada (Standard, Premium) y si se incluye una compra en la cafetería.
+
+Paso 1: El data class Transaccion
+Crea una data class llamada Transaccion.
+Debe tener las siguientes propiedades, todas inmutables:
+clienteId (Int)
+tipoEntrada (String, e.g., "Standard", "Premium")
+costoTicket (Double)
+gastoCafeteria (Double)
+
+Paso 2: La Interfaz ReglaPuntos (Estrategia)
+Crea una interfaz llamada ReglaPuntos.
+Esta interfaz debe declarar un
+único método: calcularPuntos(transaccion: Transaccion) que devuelva un Int.
+
+Paso 3: Las Clases de Estrategia
+Crea dos clases que implementen la interfaz ReglaPuntos para simular diferentes lógicas de negocio:
+ReglaBase:
+Implementa calcularPuntos. La regla es simple: 1 punto por cada $5 gastados en el costoTicket.
+Los puntos deben ser números enteros.
+ReglaPromocion:
+Implementa calcularPuntos. La regla es más compleja: Suma los puntos de la ReglaBase,
+y añade 20 puntos extra si el gastoCafeteria es mayor que $10.
+
+Paso 4: El GestorPuntos (Singleton con Lambdas)
+Crea un objeto singleton llamado GestorPuntos.
+Dentro, crea una lista mutable (MutableList) que almacene objetos de tipo Transaccion.
+Crea un método registrarTransaccion(transaccion: Transaccion) para agregar transacciones.
+Crea un método obtenerRankingPorCliente(regla: ReglaPuntos) que reciba una de las clases
+de estrategia (ReglaPuntos) y devuelva un Map<Int, Int> (Map de clienteId a Puntos Totales).
+Este método debe usar los siguientes flujos de Kotlin en una sola cadena de operaciones:
+map: Convertir la lista de Transaccion a una lista de puntos usando el método calcularPuntos de la regla recibida.
+groupBy: Agrupar las transacciones por clienteId.
+mapValues: Sumar los puntos obtenidos por cada cliente.
+
+Paso 5: La Ejecución en main
+En la función main, crea varias instancias de Transaccion con datos variados
+(diferentes clientes, diferentes gastos).
+Registra estas transacciones en el GestorPuntos.
+Llama al método obtenerRankingPorCliente() dos veces, una vez con la ReglaBase
+y otra con la ReglaPromocion, e imprime los dos rankings.
