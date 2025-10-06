@@ -1,40 +1,51 @@
 package com.example.poo.PracticasSimples.ProcesamientoAvanzadoSensoresMetereologicos
 
 fun main() {
-    // Creamos una clase anónima que va contener las diferentes lecturas recogidas
-    var gestorSensores = object {
-        var listaLecturas = mutableListOf<LecturaSensor>()
-        fun agregarLectura(lecturaSensor: LecturaSensor) {
-            if (!listaLecturas.contains(lecturaSensor)) {
-                listaLecturas.add(lecturaSensor)
+    try {
+        // Creamos una clase anónima que va contener las diferentes lecturas recogidas
+        var gestorSensores = object {
+            var listaLecturas = mutableListOf<LecturaSensor>()
+            fun agregarLectura(lecturaSensor: LecturaSensor) {
+                if (!listaLecturas.contains(lecturaSensor)) {
+                    listaLecturas.add(lecturaSensor)
+                }
             }
         }
+        // Añadimos lecturas
+        gestorSensores.agregarLectura(LecturaSensor("Madrid", 25.7, 7, true))
+        gestorSensores.agregarLectura(LecturaSensor("Madrid", 35.8, 34, true))
+        gestorSensores.agregarLectura(LecturaSensor("Barcelona", 22.4, 19, true))
+        gestorSensores.agregarLectura(LecturaSensor("Isla Cristina", 19.5, 65, true))
+        gestorSensores.agregarLectura(LecturaSensor("Segovia", 10.3, 78, false))
+
+        println(
+            "Total temperatura: ${
+                gestorSensores.listaLecturas.procesarYSumar(
+                    { it -> it.esValida },
+                    { it -> it.temperatura })
+            }"
+        )
+
+        println(
+            "Validez: ${
+                gestorSensores.listaLecturas.transformarCondicionalmente(
+                    { it -> it.esValida },
+                    { it -> "Valido: ${it.ciudad} con temperatura ${it.temperatura}" },
+                    { it -> "Invalido: ${it.ciudad} con temperatura ${it.temperatura}" })
+            }"
+        )
+
+        println(
+            "Ciudades por temperatura media: ${
+                gestorSensores.listaLecturas.ciudadTemperaturaMedia(
+                    ::validez
+                )
+            }"
+        )
+
+    } catch (e: LecturaSensorException) {
+        println(e.message)
     }
-    // Añadimos lecturas
-    gestorSensores.agregarLectura(LecturaSensor("Madrid", 25.7, 7, true))
-    gestorSensores.agregarLectura(LecturaSensor("Madrid", 35.8, 34, true))
-    gestorSensores.agregarLectura(LecturaSensor("Barcelona", 22.4, 19, true))
-    gestorSensores.agregarLectura(LecturaSensor("Isla Cristina", 19.5, 65, true))
-    gestorSensores.agregarLectura(LecturaSensor("Segovia", 10.3, 78, false))
-
-    println(
-        "Total temperatura: ${
-            gestorSensores.listaLecturas.procesarYSumar(
-                { it -> it.esValida },
-                { it -> it.temperatura })
-        }"
-    )
-
-    println(
-        "Validez: ${
-            gestorSensores.listaLecturas.transformarCondicionalmente(
-                { it -> it.esValida },
-                { it -> "Valido: ${it.ciudad} con temperatura ${it.temperatura}" },
-                { it -> "Invalido: ${it.ciudad} con temperatura ${it.temperatura}" })
-        }"
-    )
-
-    println("Ciudades por temperatura media: ${gestorSensores.listaLecturas.ciudadTemperaturaMedia(::validez)}")
 }
 
 fun validez(lecturaSensor: LecturaSensor) = lecturaSensor.esValida

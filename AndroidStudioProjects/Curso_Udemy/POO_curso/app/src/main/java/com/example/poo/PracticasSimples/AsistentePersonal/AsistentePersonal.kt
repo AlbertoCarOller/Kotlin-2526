@@ -1,23 +1,28 @@
 package com.example.poo.PracticasSimples.AsistentePersonal
 
 fun main() {
-    var tarea1 = Tarea("Barrer la casa", Categoria.HOGAR, 2, false)
-    var tarea2 = Tarea("Ayuda con el trabajo", Categoria.TRABAJO, 4, false)
-    var tarea3 = Tarea("Dar de comer al perro", Categoria.HOGAR, 5, true)
-    var tarea4 = Tarea("Llorar", Categoria.PERSONAL, 3, true)
-    var tarea5 = Tarea("Deshaogarse", Categoria.PERSONAL, 2, false)
+    try {
+        var tarea1 = Tarea("Barrer la casa", Categoria.HOGAR, 2, false)
+        var tarea2 = Tarea("Ayuda con el trabajo", Categoria.TRABAJO, 4, false)
+        var tarea3 = Tarea("Dar de comer al perro", Categoria.HOGAR, 5, true)
+        var tarea4 = Tarea("Llorar", Categoria.PERSONAL, 3, true)
+        var tarea5 = Tarea("Deshaogarse", Categoria.PERSONAL, 2, false)
 
-    with(GestorTareas) {
-        this.agregarTarea(tarea1)
-        this.agregarTarea(tarea2)
-        this.agregarTarea(tarea3)
-        this.agregarTarea(tarea4)
-        this.agregarTarea(tarea5)
+        with(GestorTareas) {
+            this.agregarTarea(tarea1)
+            this.agregarTarea(tarea2)
+            this.agregarTarea(tarea3)
+            this.agregarTarea(tarea4)
+            this.agregarTarea(tarea5)
 
-        this.tareasDeTrabajo()
-        this.ordernarPorPrioridad()
-        this.mostrarNombresPrioridad5()
-        this.prioritariosSinCompletar()
+            this.tareasDeTrabajo()
+            this.ordernarPorPrioridad()
+            this.mostrarNombresPrioridad5()
+            this.prioritariosSinCompletar()
+        }
+
+    } catch (e: AsistentePersonalException) {
+        println(e.message)
     }
 }
 
@@ -64,7 +69,8 @@ object GestorTareas {
 
     // Mostramos las tareas ordenadas de forma descendente
     fun ordernarPorPrioridad() {
-        listaTareas.sortedByDescending { tarea -> tarea.prioridad }.forEach { tarea -> println(tarea) }
+        listaTareas.sortedByDescending { tarea -> tarea.prioridad }
+            .forEach { tarea -> println(tarea) }
     }
 
     // Por cada tarea prioritaria sin completar se dará un aviso

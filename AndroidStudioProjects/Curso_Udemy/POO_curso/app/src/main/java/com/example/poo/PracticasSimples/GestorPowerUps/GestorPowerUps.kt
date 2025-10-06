@@ -1,18 +1,22 @@
 package com.example.poo.PracticasSimples.GestorPowerUps
 
 fun main() {
-    var megasalto = Megasalto("Megasalto conejo", 9.3)
-    var megasalto1 = Megasalto("Megasalto del dragón", 10.8)
-    var invencibilidad = Invencibilidad("Invencibilidad nivel 1", 2.2)
-    var invencibilidad1 = Invencibilidad("Invencibilidad nivel 2", 12.2)
+    try {
+        var megasalto = Megasalto("Megasalto conejo", 9.3)
+        var megasalto1 = Megasalto("Megasalto del dragón", 10.8)
+        var invencibilidad = Invencibilidad("Invencibilidad nivel 1", 2.2)
+        var invencibilidad1 = Invencibilidad("Invencibilidad nivel 2", 12.2)
 
-    with(MochilaPowerUps) {
-        this.agregarPowerUp(megasalto)
-        this.agregarPowerUp(megasalto1)
-        this.agregarPowerUp(invencibilidad)
-        this.agregarPowerUp(invencibilidad1)
+        with(MochilaPowerUps) {
+            this.agregarPowerUp(megasalto)
+            this.agregarPowerUp(megasalto1)
+            this.agregarPowerUp(invencibilidad)
+            this.agregarPowerUp(invencibilidad1)
 
-        this.mostrarEfectos()
+            this.mostrarEfectos()
+        }
+    } catch (e: GestorPowerUpsException) {
+        println(e.message)
     }
 }
 

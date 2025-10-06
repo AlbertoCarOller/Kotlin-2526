@@ -1,14 +1,19 @@
 package com.example.poo.SistemaReportesYAnalisisAcademico
 
 fun main() {
-    var listaEstudiante = listOf<Estudiante>(
-        Estudiante("Antonio", "Acceso a datos", 10.0, 40),
-        Estudiante("Alberto", "Programación multimedia", 10.0, 90),
-        Estudiante("Lolitogoku", "Programación", 8.0, 10),
-        Estudiante("Paco", "Proyecto Intermodular", 2.0, 100)
-    )
-    println("Promedio de calificaiones: ${listaEstudiante.obtenerPromedio { it -> it.calificacion }}")
-    println("Promedio de asistencia: ${listaEstudiante.obtenerPromedio { it -> it.asistenciaPorcetaje.toDouble() }}")
+    try {
+        var listaEstudiante = listOf<Estudiante>(
+            Estudiante("Antonio", "Acceso a datos", 10.0, 40),
+            Estudiante("Alberto", "Programación multimedia", 10.0, 90),
+            Estudiante("Lolitogoku", "Programación", 8.0, 10),
+            Estudiante("Paco", "Proyecto Intermodular", 2.0, 100)
+        )
+        println("Promedio de calificaiones: ${listaEstudiante.obtenerPromedio { it -> it.calificacion }}")
+        println("Promedio de asistencia: ${listaEstudiante.obtenerPromedio { it -> it.asistenciaPorcetaje.toDouble() }}")
+
+    } catch (e: SistemaReportesException) {
+        println(e.message)
+    }
 }
 
 interface Reportable {

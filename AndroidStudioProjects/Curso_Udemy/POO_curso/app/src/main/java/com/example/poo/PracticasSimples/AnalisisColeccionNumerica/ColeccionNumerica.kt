@@ -1,15 +1,24 @@
 package com.example.poo.PracticasSimples.AnalisisColeccionNumerica
 
 fun main() {
-    var listaPuntosDatos = listOf<PuntoDato>(
-        PuntoDato(45, 1.2),
-        PuntoDato(15, 0.8),
-        PuntoDato(87, 2.2),
-        PuntoDato(11, 1.1),
-        PuntoDato(90, 0.43)
-    )
-    println("Valor principal total: ${listaPuntosDatos.sumarMetricaPersonalizada(::extraerValorPrincipal)}")
-    println("Valor ajustado total: ${listaPuntosDatos.sumarMetricaPersonalizada { it -> it.valorPrincipal * it.multiplicadorDeRiesgo }}")
+    try {
+        var listaPuntosDatos = listOf(
+            PuntoDato(45, 1.2),
+            PuntoDato(15, 0.8),
+            PuntoDato(87, 2.2),
+            PuntoDato(11, 1.1),
+            PuntoDato(90, 0.43)
+        )
+        println("Valor principal total: ${listaPuntosDatos.sumarMetricaPersonalizada(::extraerValorPrincipal)}")
+        println(
+            "Valor ajustado total: ${
+                listaPuntosDatos
+                    .sumarMetricaPersonalizada { it -> it.valorPrincipal * it.multiplicadorDeRiesgo }
+            }"
+        )
+    } catch (e: PuntoDatoException) {
+        println(e.message)
+    }
 }
 
 fun extraerValorPrincipal(puntoDato: PuntoDato) = puntoDato.valorPrincipal.toDouble()

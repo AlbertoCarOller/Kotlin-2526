@@ -1,29 +1,33 @@
 package com.example.poo.PracticasSimples.GestionEquipoScrum
 
 fun main() {
-    // Añadimos varias tareas a la lista del ScrumMaster
-    ScrumMaster.registrarTarea(Tarea("Buscar vuelo", 4, 1.0))
-    ScrumMaster.registrarTarea(Tarea("Buscar hotel", 9, 2.1))
-    ScrumMaster.registrarTarea(Tarea("Buscar actividades", 10, 3.2))
-    ScrumMaster.registrarTarea(Tarea("Buscar transporte", 2, 3.0))
-    ScrumMaster.registrarTarea(Tarea("Buscar comida", 1, 2.2))
+    try {
+        // Añadimos varias tareas a la lista del ScrumMaster
+        ScrumMaster.registrarTarea(Tarea("Buscar vuelo", 4, 1.0))
+        ScrumMaster.registrarTarea(Tarea("Buscar hotel", 9, 2.1))
+        ScrumMaster.registrarTarea(Tarea("Buscar actividades", 10, 3.2))
+        ScrumMaster.registrarTarea(Tarea("Buscar transporte", 2, 3.0))
+        ScrumMaster.registrarTarea(Tarea("Buscar comida", 1, 2.2))
 
-    // Con el '=' simplificamos la función e indicamos que va a devolver en este caso un Double
-    fun sumarHoras(tarea: Tarea) = tarea.tiempoRealHoras
-    println(
-        "Total de horas del SRUM (v1): ${
-            ScrumMaster.getListaTareas().calcularMetricaAcumulada(::sumarHoras)
-        }"
-    )
+        // Con el '=' simplificamos la función e indicamos que va a devolver en este caso un Double
+        fun sumarHoras(tarea: Tarea) = tarea.tiempoRealHoras
+        println(
+            "Total de horas del SRUM (v1): ${
+                ScrumMaster.getListaTareas().calcularMetricaAcumulada(::sumarHoras)
+            }"
+        )
 
-    println(
-        "Total de horas del SRUM (v2): ${
-            ScrumMaster.getListaTareas().calcularMetricaAcumulada { it -> it.tiempoRealHoras }
-        }"
-    )
-    ScrumMaster.revisarTareasCriticas(5)
-    ScrumMaster.getListaTareas().filter { it -> it.tiempoRealHoras < 3 }
-        .map { it -> "Tarea optima: ${it.descripcion}" }.forEach(::println)
+        println(
+            "Total de horas del SRUM (v2): ${
+                ScrumMaster.getListaTareas().calcularMetricaAcumulada { it -> it.tiempoRealHoras }
+            }"
+        )
+        ScrumMaster.revisarTareasCriticas(5)
+        ScrumMaster.getListaTareas().filter { it -> it.tiempoRealHoras < 3 }
+            .map { it -> "Tarea optima: ${it.descripcion}" }.forEach(::println)
+    } catch (e: TareaException) {
+        println(e.message)
+    }
 }
 
 interface Productivo {
