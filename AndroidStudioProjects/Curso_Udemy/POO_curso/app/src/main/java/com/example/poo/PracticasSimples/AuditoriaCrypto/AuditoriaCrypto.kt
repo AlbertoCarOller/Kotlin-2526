@@ -1,4 +1,4 @@
-package com.example.poo.PracticasSimples
+package com.example.poo.PracticasSimples.AuditoriaCrypto
 
 fun main() {
     // Creamos varios activos crytos
