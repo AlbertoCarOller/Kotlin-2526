@@ -20,12 +20,16 @@ fun main() {
         { it -> "Consumible: ${it.nombre}" }, { it -> "No consumible: ${it.nombre}" })
         .forEach(::println)
 
+    // Creamos una variable/función
+    var valorBasePorStock: (Recurso) -> Double = { it -> it.valorBase * it.cantidadStock }
+
     println(
         "Promedio: %.2f".format(
             listaRecurso.filtrarYObtenerPromedio(
                 { it -> !it.esConsumible },
                 { it -> it.cantidadStock * it.valorBase },
-                { it -> it.valorBase * it.cantidadStock })
+                valorBasePorStock
+            )
         )
     )
 }
