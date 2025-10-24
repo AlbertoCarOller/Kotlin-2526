@@ -122,7 +122,7 @@ class Tablero extends StatelessWidget {
                                     style: TextStyle(color: Colors.white),
                                   ),
                                   // Icono jugador rojo, _outline para que no tenga relleno
-                                  Icon(Icons.person_outline, color: Colors.red,),
+                                  Icon(Icons.person_outline, color: Colors.red),
                                   Text(
                                     "Puntos: 120",
                                     style: TextStyle(
@@ -143,7 +143,62 @@ class Tablero extends StatelessWidget {
             ),
           ),
           // Creamos la parte de abajo, donde están los comentarios
-          Expanded(child: Container(color: Colors.white)),
+          Expanded(
+            child: Column(
+              children: [
+                Expanded(child: Text("Historial de Movimientos")),
+                Expanded(
+                  flex: 3,
+                  child: ListView.separated(
+                    itemCount: 20,
+                    itemBuilder: (context, index) {
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              // Círculo de avatar
+                              Container(
+                                margin: EdgeInsets.only(right: 8),
+                                child: CircleAvatar(
+                                  radius: 18,
+                                  backgroundColor: (index % 2 == 0)
+                                      ? Colors.blue
+                                      : Colors.deepOrange,
+                                  child: Text(
+                                    "${index + 1}",
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                ),
+                              ),
+                              // Textos
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Jugador ${index + 1} movió pieza",
+                                    style: TextStyle(fontSize: 14),
+                                  ),
+                                  Text(
+                                    "Caballero a la casilla C4",
+                                    style: TextStyle(fontSize: 10),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                          Icon(Icons.history_sharp, size: 20),
+                        ],
+                      );
+                    },
+                    separatorBuilder: (BuildContext context, int index) {
+                      return SizedBox(height: 15);
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );
