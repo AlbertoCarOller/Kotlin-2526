@@ -177,7 +177,7 @@ class Tablero extends StatelessWidget {
                                 children: [
                                   Text(
                                     "Jugador ${index + 1} movió pieza",
-                                    style: TextStyle(fontSize: 14),
+                                    style: TextStyle(fontSize: 15),
                                   ),
                                   Text(
                                     "Caballero a la casilla C4",
