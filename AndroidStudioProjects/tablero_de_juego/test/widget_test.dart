@@ -1,30 +1,35 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:tablero_de_juego/main.dart';
+// 1. IMPORTA SOLO TU WIDGET, el que sí existe
+import 'package:tablero_de_juego/TableroDeJuego/TableroDeJuego.dart';
+
+// 2. ELIMINA la línea que daba error:
+// import 'package:tablero_de_juego/main.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+  // 3. Cambia el nombre del test a algo que tenga sentido
+  testWidgets('El tablero se muestra con el título y los escudos', (WidgetTester tester) async {
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    // Construye tu app
+    await tester.pumpWidget(const TableroDeJuego());
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+    // 4. Escribe tests que SÍ comprueban tu app
 
-    // Verify that our counter has incremented.
+    // Verifica que el título de tu AppBar es correcto
+    expect(find.text('Tablero de juego táctico'), findsOneWidget);
+
+    // Verifica que NO están los widgets del contador
     expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    expect(find.byIcon(Icons.add), findsNothing);
+
+    // Verifica que SÍ aparecen tus iconos de escudo
+    // (que están dentro de tus ContenedorGris)
+    // Usamos 'findsWidgets' porque esperas encontrar más de uno.
+    expect(find.byIcon(Icons.shield), findsWidgets);
+
+    // Si sabes exactamente cuántos escudos debe haber (por ejemplo, 16 en una 4x4)
+    // podrías ser más específico:
+    // expect(find.byIcon(Icons.shield), findsNWidgets(16));
   });
 }
