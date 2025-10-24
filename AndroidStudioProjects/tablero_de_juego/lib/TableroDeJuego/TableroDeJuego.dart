@@ -25,6 +25,7 @@ class ContenedorGris extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      margin: EdgeInsets.all(2),
       decoration: BoxDecoration(
         color: Color.fromARGB(255, 84, 110, 122),
         borderRadius: BorderRadius.circular(5),
@@ -50,33 +51,47 @@ class Tablero extends StatelessWidget {
       body: Column(
         children: [
           Expanded(
-            flex: 2,
+            flex: 3,
+            // Container de la estructura completa de arriba
             child: Container(
               padding: EdgeInsets.all(5),
               color: Color.fromARGB(255, 55, 71, 79),
               // Fila de parte de arriba (gris)
               child: Row(
                 children: [
-                  // Tablero 4x4
-                  Expanded(
-                    flex:3,
-                    child: Container(
-                      color: Colors.yellow,
+                  // Creamos las filas
+                  for (int i = 0; i < 4; i++)
+                    Expanded(
+                      flex: 1,
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Column(
+                              children: [
+                                // Creamos las columnas
+                                for (int i = 0; i < 4; i++) Expanded(child: ContenedorGris()),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
+                  // Container, parte izquierza, columna con los dos jugadores
                   Expanded(
                     flex: 2,
                     child: Container(
-                      color: Colors.red,
+                      color: Color.fromARGB(255, 69, 90, 100),
+                      child: Column(),
                     ),
                   ),
                 ],
               ),
             ),
           ),
+          // Creamos la parte de abajo, donde están los comentarios
           Expanded(
             child: Container(
-              color: Colors.black12,
+              color: Colors.white,
             ),
           )
         ],
