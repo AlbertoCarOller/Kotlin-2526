@@ -69,7 +69,8 @@ class Tablero extends StatelessWidget {
                             child: Column(
                               children: [
                                 // Creamos las columnas
-                                for (int i = 0; i < 4; i++) Expanded(child: ContenedorGris()),
+                                for (int i = 0; i < 4; i++)
+                                  Expanded(child: ContenedorGris()),
                               ],
                             ),
                           ),
@@ -80,8 +81,61 @@ class Tablero extends StatelessWidget {
                   Expanded(
                     flex: 2,
                     child: Container(
-                      color: Color.fromARGB(255, 69, 90, 100),
-                      child: Column(),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        color: Color.fromARGB(255, 69, 90, 100),
+                      ),
+                      // Columna general
+                      child: Expanded(
+                        child: Column(
+                          children: [
+                            // Columna jugador azul
+                            Expanded(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  // Texto
+                                  Text(
+                                    "Jugador 1 (Azul)",
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                  // Icono jugador azul
+                                  Icon(Icons.person, color: Colors.blue),
+                                  Text(
+                                    "Puntos: 120",
+                                    style: TextStyle(
+                                      fontSize: 8,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            // Columna de jugador rojo
+                            Expanded(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  // Texto
+                                  Text(
+                                    "Jugador 2 (Rojo)",
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                  // Icono jugador rojo, _outline para que no tenga relleno
+                                  Icon(Icons.person_outline, color: Colors.red,),
+                                  Text(
+                                    "Puntos: 120",
+                                    style: TextStyle(
+                                      fontSize: 8,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                   ),
                 ],
@@ -89,11 +143,7 @@ class Tablero extends StatelessWidget {
             ),
           ),
           // Creamos la parte de abajo, donde están los comentarios
-          Expanded(
-            child: Container(
-              color: Colors.white,
-            ),
-          )
+          Expanded(child: Container(color: Colors.white)),
         ],
       ),
     );
