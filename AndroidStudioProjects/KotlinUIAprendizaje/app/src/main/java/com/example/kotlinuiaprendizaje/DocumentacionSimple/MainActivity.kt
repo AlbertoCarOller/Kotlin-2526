@@ -1,4 +1,4 @@
-package com.example.kotlinuiaprendizaje
+package com.example.kotlinuiaprendizaje.DocumentacionSimple
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -17,12 +17,14 @@ import com.example.kotlinuiaprendizaje.ui.theme.KotlinUIAprendizajeTheme
 // MainActivity -> La ventana interactiva de la app
 class MainActivity : ComponentActivity() {
     // onCreate -> Es el punto de entrada (aquí va el código)
+    // savedInstanceState: Bundle? -> Es como un paquete que guarda pares de clave-valor
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // enableEdgeToEdge() ->Le dice a la pantalla que ocupe el espacio completo de la pantalla incluido las barras del sistema
         enableEdgeToEdge()
         // setContent -> Es el puente entre la ventana (MainActivity) y Jetpack Compose (UI)
         setContent {
-            // KotlinUIAprendizajeTheme -> Tema, como se debe de ver la UI, colores y demás
+            // KotlinUIAprendizajeTheme -> Tema, como se debe de ver la UI, colores y demás, como MaterialApp en flutter
             KotlinUIAprendizajeTheme {
                 /* Scaffold -> Es el esqueleto básico de una pantalla.
                 *  modifier -> Es un atributo del Scaffold que le dice al Scaffold como debe ser,
@@ -32,29 +34,36 @@ class MainActivity : ComponentActivity() {
                 * dispositivo, porque le dice al Scaffold que coga el tamaño completo de su padre,
                 * en este caso es el KotlinUIAprendizajeTheme, que a su vez el padre de este es
                 * setContent, es decir que coge toda la pantalla */
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding -> /* -> Empuja el resto del
+                 contenido, para que no tape el TopAppBar */
                     Greeting(
                         name = "Android",
                         modifier = Modifier.padding(innerPadding)
-                    )
+                    ) // Los modifier son como los style en flutter
                 }
             }
         }
     }
 }
 
+// @Composable -> que es un "widget"
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
+    // Crea un columna, como hacemos en flutter
     Column {
+        // Dentro de esta Colum, tenemos dos Text, como hacemos en flutter
         Text("Hola $name")
         Text("Hola Composable")
     }
 }
 
+// @Preview(showBackground = true) -> Para mostrar una previsualización breve del @Composable
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
+    // KotlinUIAprendizajeTheme -> Se pone para poder previsualizarlo con los estilos definidos
     KotlinUIAprendizajeTheme {
+        // Llama al Greeting y le pasas un nombre de ejemplo para la previsualización
         Greeting("Android")
     }
 }
