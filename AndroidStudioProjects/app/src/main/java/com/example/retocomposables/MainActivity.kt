@@ -212,5 +212,6 @@ fun sumarScoreYLevel(scoreR: Int, levelR: Int): Pair<Int, Int> {
     if (score % 10 == 0) {
         level++
     }
+    // Devuelve el par de valores (Pair) como el Map.Entry
     return Pair(score, level)
 }
