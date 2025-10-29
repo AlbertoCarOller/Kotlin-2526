@@ -1,5 +1,7 @@
 package com.example.retocomposables
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -24,10 +26,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -40,12 +44,16 @@ class MainActivity : ComponentActivity() {
     }
 
     private val name: String = "Alberto"
-
-    // Creamos el objeto que contiene la información
-    var InformacionBasica = InformacionBasica()
+    private var score: Int = 0 //-> Se la pasaríamos a PrincipalStructure
+    private var level: Int = 0 //-> Se la pasaríamos a PrincipalStructure
 
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
+        // Recuperamos los datos en caso de que no esté vacía la mochila (antiguo)
+        /*savedInstanceState?.let {
+            score = savedInstanceState.getInt("SCORE_KEY")
+            level = savedInstanceState.getInt("LEVEL_KEY")
+        }*/
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
@@ -66,6 +74,12 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+    /*override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        // Guardamos en la mochila (antiguo)
+        outState.putInt("SCORE_KEY", score)
+        outState.putInt("LEVEL_KEY", level)
+    }*/
 
     /**
      * Creamos un "widget" de texto al cual le vamos
@@ -100,10 +114,11 @@ class MainActivity : ComponentActivity() {
      */
     @Composable
     fun PrincipalStructure(modifier: Modifier) {
-        /* Declaramos las variables con 'by remember { mutableIntStateOf(valor_inicial) } para que no se
-         borren los datos, los recuerde al redibujar, redibijar al cambiar el estado de una variable */
-        var score by remember { mutableIntStateOf(0) }
-        var level by remember { mutableIntStateOf(0) }
+        /* Declaramos las variables con 'by rememberSaveable { mutableIntStateOf(valor_inicial) }' para que no se
+         borren los datos, los recuerde al redibujar, redibujar al cambiar el estado de una variable,
+          añadiendo al rememberSaveable se guarda en la mochila*/
+        var score by rememberSaveable { mutableIntStateOf(0) }
+        var level by rememberSaveable { mutableIntStateOf(0) }
         // Estructura principal
         Column(modifier = modifier) {
             // Saludo
@@ -153,6 +168,10 @@ class MainActivity : ComponentActivity() {
                     })
                 }
             }
+            // LocalContext.current -> Pasa el context actual de esta actividad
+            val context = LocalContext.current /* -> Solo se puede llamar desde otro @Composable,
+             en este caso el de la estructura principal, llama a la Activity principal siempre */
+            // Creamos el botón para ir a la 'EndGameActivity'
             Box(
                 modifier = Modifier
                     .fillMaxSize()
@@ -160,6 +179,8 @@ class MainActivity : ComponentActivity() {
                 contentAlignment = Alignment.BottomCenter
             ) {
                 StandardButton("End Game", onClick = {
+                    // Se le pasa el context y los valores del score y level necesarios
+                    goToEndGameActivity(context = context, score, level, name)
                     Log.d("End Game", "Button End Game clicked")
                 })
             }
@@ -214,4 +235,20 @@ fun sumarScoreYLevel(scoreR: Int, levelR: Int): Pair<Int, Int> {
     }
     // Devuelve el par de valores (Pair) como el Map.Entry
     return Pair(score, level)
+}
+
+/**
+ * Esta función va a recibir el context, es decir el contexto de la clase o actividad actual
+ * y después vamos a pasarle el score y level actual para posteriormente crear un 'Intent' que
+ * lleve desde esta actividad a 'EndGameActivity' pasándole como argumento el 'score' y el 'level'
+ */
+fun goToEndGameActivity(context: Context, scoreR: Int, levelR: Int, name: String) {
+    // Creamos el 'Intent' con el contexto de actual, es decir esta clase, hasta la clase 'EndGameActivity'
+    val intent = Intent(context, EndGameActivity::class.java)
+    // Enviamos los datos con el .putExtra de los 'Intent'
+    intent.putExtra("SCORE_KEY", scoreR)
+    intent.putExtra("LEVEL_KEY", levelR)
+    intent.putExtra("NAME_KEY", name)
+    // Iniciamos la otra actividad, con la función '.startActivity(intent)', pasándole el 'Intent' necesario
+    context.startActivity(intent)
 }
