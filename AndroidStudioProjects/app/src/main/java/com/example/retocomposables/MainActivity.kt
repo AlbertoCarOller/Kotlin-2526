@@ -42,13 +42,20 @@ class MainActivity : ComponentActivity() {
         const val TAG = "MainActivity"
     }
 
-    // Inicializamos la data class
-    var game = Game()
+    // Con lateinit le decimos a Koytlin que pronto será inicializada para que no nos dé error
+    private lateinit var game: Game
+
     //private var score: Int = 0 //-> Se la pasaríamos a PrincipalStructure
     //private var level: Int = 0 //-> Se la pasaríamos a PrincipalStructure
 
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
+        // Recibimos el nombre
+        val nombre = intent.getStringExtra("NAME_LOG_KEY") ?: "Alberto"
+        /* Inicializamos la clase juego aquí, IMPORTANTE: la única manera de asegurarnos
+         que el Intent se ha creado correctamente es dentro del 'onCreate', una vez que ya se
+          ha creado esta pantalla es cuando se le pueden pasar argumentos*/
+        game = Game(nombre = nombre)
         // Recuperamos los datos en caso de que no esté vacía la mochila (antiguo)
         /*savedInstanceState?.let {
             score = savedInstanceState.getInt("SCORE_KEY")
