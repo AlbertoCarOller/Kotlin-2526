@@ -1,7 +1,7 @@
 package com.example.retocomposables
 
 // Creamos una data class que va a guardar información básica importante
-data class InformacionBasica(
+data class Game(
     val nombre: String = "Alberto",
     val score: Int = 0,
     val level: Int = 0)

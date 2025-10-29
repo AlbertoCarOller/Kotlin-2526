@@ -25,7 +25,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -43,9 +42,10 @@ class MainActivity : ComponentActivity() {
         const val TAG = "MainActivity"
     }
 
-    private val name: String = "Alberto"
-    private var score: Int = 0 //-> Se la pasaríamos a PrincipalStructure
-    private var level: Int = 0 //-> Se la pasaríamos a PrincipalStructure
+    // Inicializamos la data class
+    var game = Game()
+    //private var score: Int = 0 //-> Se la pasaríamos a PrincipalStructure
+    //private var level: Int = 0 //-> Se la pasaríamos a PrincipalStructure
 
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -117,8 +117,8 @@ class MainActivity : ComponentActivity() {
         /* Declaramos las variables con 'by rememberSaveable { mutableIntStateOf(valor_inicial) }' para que no se
          borren los datos, los recuerde al redibujar, redibujar al cambiar el estado de una variable,
           añadiendo al rememberSaveable se guarda en la mochila*/
-        var score by rememberSaveable { mutableIntStateOf(0) }
-        var level by rememberSaveable { mutableIntStateOf(0) }
+        var score by rememberSaveable { mutableIntStateOf(game.score) }
+        var level by rememberSaveable { mutableIntStateOf(game.score) }
         // Estructura principal
         Column(modifier = modifier) {
             // Saludo
@@ -126,7 +126,7 @@ class MainActivity : ComponentActivity() {
                 contentAlignment = Alignment.Center,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text("Hello $name!")
+                Text("Hello ${game.nombre}!")
             }
             // Fila con Textos y botón
             Row(modifier = Modifier.padding(5.dp)) {
@@ -180,7 +180,7 @@ class MainActivity : ComponentActivity() {
             ) {
                 StandardButton("End Game", onClick = {
                     // Se le pasa el context y los valores del score y level necesarios
-                    goToEndGameActivity(context = context, score, level, name)
+                    goToEndGameActivity(context = context, score, level, game.nombre)
                     Log.d("End Game", "Button End Game clicked")
                 })
             }
