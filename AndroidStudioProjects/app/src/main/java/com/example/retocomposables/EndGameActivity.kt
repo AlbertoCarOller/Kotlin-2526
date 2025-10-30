@@ -4,8 +4,10 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -44,18 +46,28 @@ class EndGameActivity : ComponentActivity() {
                         /* IMPORTANTE: Para obtener los valores que pasa el intent es parecido a un Map,
                          se pone la clave y te devuelve el value, el método utilizado es .getStringExtra(key_name, defaultValue) */
                         // Primer mensaje de saludo al usuario o introducción a esta pantalla
-                        Text("Aquí tienes los resultados ${intent.getStringExtra("NAME_KEY") ?: "Sin datos"}")
-                        Spacer(modifier = Modifier.height(150.dp))
-                        Text("Game Over!", fontSize = 50.sp)
-                        Spacer(modifier = Modifier.height(20.dp))
-                        Informacion(
-                            "Score", intent.getIntExtra("SCORE_KEY", 0),
-                            30.sp, Color.Red
-                        )
-                        Informacion(
-                            "Level", intent.getIntExtra("LEVEL_KEY", 0),
-                            30.sp, Color.Red
-                        )
+                        Box(modifier = Modifier
+                            .padding(8.dp)
+                            .fillMaxHeight(fraction = 0.1f)) {
+                            Text("Aquí tienes los resultados ${intent.getStringExtra("MENSAJE_KEY") ?: "Sin datos"}")
+                        }
+                        Box(modifier = Modifier
+                            .padding(8.dp)
+                            .fillMaxHeight(fraction = 0.9f),
+                            contentAlignment = Alignment.Center) {
+                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                                Text("Game Over!", fontSize = 50.sp)
+                                Spacer(modifier = Modifier.height(20.dp))
+                                Informacion(
+                                    "Score", intent.getIntExtra("SCORE_KEY", 0),
+                                    30.sp, Color.Red
+                                )
+                                Informacion(
+                                    "Level", intent.getIntExtra("LEVEL_KEY", 0),
+                                    30.sp, Color.Red
+                                )
+                            }
+                        }
                     }
                 }
             }
