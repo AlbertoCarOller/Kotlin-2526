@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -160,19 +161,35 @@ class MainActivity : ComponentActivity() {
                     }
                 }
                 // Centramos el botón envolviéndolo en un Box
-                Box(
-                    contentAlignment = Alignment.Center, modifier = Modifier
-                        .height(80.dp)
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.SpaceBetween,
+                    modifier = Modifier
+                        .height(100.dp)
                         .fillMaxWidth()
                 ) {
-                    // Creamos el botón
+                    // Creamos el botón de incrementar
                     StandardButton("Increase Score", onClick = {
                         val valores = sumarScoreYLevel(score, level)
                         // Actualizamos los valores
                         score = valores.first
                         level = valores.second
+                        //Lo refelejamos en la data class también
+                        game.score = score
+                        game.level = level
                         // Log.d() -> Es para escribir en el LogCat
                         Log.d("Increase Score", "Button Increase Score clicked")
+                    })
+                    // Creamos espacio entre los dos botones
+                    Spacer(modifier = Modifier.height(5.dp))
+                    // Creamos el botón de decrementar
+                    StandardButton("Decrement Score", onClick = {
+                        // Actualizamos los valores
+                        score = restarScore(game.score, game.level)
+                        //Lo refelejamos en la data class también
+                        game.score = score
+                        // Log.d() -> Es para escribir en el LogCat
+                        Log.d("Decrement Score", "Button Decrement Score clicked")
                     })
                 }
             }
@@ -188,7 +205,7 @@ class MainActivity : ComponentActivity() {
             ) {
                 StandardButton("End Game", onClick = {
                     // Se le pasa el context y los valores del score y level necesarios
-                    goToEndGameActivity(context = context, score, level, game.nombre)
+                    goToEndGameActivity(context = context, game.score, game.level, game.nombre)
                     Log.d("End Game", "Button End Game clicked")
                 })
             }
@@ -229,9 +246,9 @@ class MainActivity : ComponentActivity() {
 /**
  * Esta función va a recibir los valores de score y level
  * a partir de estos valores va a sumar el score y el level
- * cada 10 de score en 1
+ * correspondiente a la lógica pedida
  */
-fun sumarScoreYLevel(scoreR: Int, levelR: Int): Pair<Int, Int> {
+var sumarScoreYLevel : (scoreR: Int, levelR: Int) -> Pair<Int, Int> = { scoreR, levelR ->
     // Nuevos valores
     var score = scoreR
     var level = levelR
@@ -246,7 +263,26 @@ fun sumarScoreYLevel(scoreR: Int, levelR: Int): Pair<Int, Int> {
     // Calculamos el valor del level dependiendo del Score
     level = (score / 10)
     // Devuelve el par de valores (Pair) como el Map.Entry
-    return Pair(score, level)
+    Pair(score, level)
+}
+
+/**
+ * Esta función va a restar el Score, va a restar el doble del
+ * nivel actual, en caso de que esta cantidad sea mayor, se establecerá
+ * el valor del score en 0
+ */
+var restarScore : (scoreR: Int, levelR: Int) -> Int = { scoreR, levelR ->
+    var score = scoreR
+    // Calculamos la cantidad a restar
+    var cantidadRestar = levelR * 2
+    // En caso de que el score que sea mayor a la cantidad a restar entra
+    if (scoreR > cantidadRestar) {
+        score -= cantidadRestar
+        // En caso que el score sea menor o igual a la cantidad a restarm directamente la pasamos a 0
+    } else {
+        score = 0
+    }
+    score
 }
 
 /**
