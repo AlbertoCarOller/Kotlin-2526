@@ -53,7 +53,7 @@ class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         // Recibimos el nombre
-        val nombre = intent.getStringExtra("NAME_LOG_KEY") ?: "Alberto"
+        val nombre = intent.getStringExtra("NAME_LOG_KEY") ?: "Invitado"
         /* Inicializamos la clase juego aquí, IMPORTANTE: la única manera de asegurarnos
          que el Intent se ha creado correctamente es dentro del 'onCreate', una vez que ya se
           ha creado esta pantalla es cuando se le pueden pasar argumentos*/
