@@ -35,6 +35,7 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.retocomposables.ui.theme.RetoComposablesTheme
+import kotlin.random.Random
 
 class MainActivity : ComponentActivity() {
     // Valor constante estático
@@ -234,12 +235,16 @@ fun sumarScoreYLevel(scoreR: Int, levelR: Int): Pair<Int, Int> {
     // Nuevos valores
     var score = scoreR
     var level = levelR
-    // Incrementamos el valor
-    score++
-    // Sumamos un nivel cada 10 de score
-    if (score % 10 == 0) {
-        level++
+    // En caso de que level sea mayor a 1 hacemos el Random
+    if (level >= 1) {
+        // Incrementamos el valor de score de un número aleatorio entre 1 y el level
+        score += (Random.Default.nextInt(1, level + 1))
+        // En caso de que level sea 0 o 1, se suma 1 directamente
+    } else {
+        score++
     }
+    // Calculamos el valor del level dependiendo del Score
+    level = (score / 10)
     // Devuelve el par de valores (Pair) como el Map.Entry
     return Pair(score, level)
 }
