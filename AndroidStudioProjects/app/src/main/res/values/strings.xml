@@ -1,3 +1,20 @@
 <resources>
     <string name="app_name">RetoComposables</string>
+    "-----------LaucherActivity-----------"
+    <string name="titulo">ActividadLanzadora</string>
+    <string name="textField">Introduce tu nombre</string>
+    <string name="botonJugar">Jugar</string>
+    "-----------MainActivity-----------"
+    <string name="titulo">Súper Contador de Juegos</string>
+    <string name="score">Puntos</string>
+    <string name="level">Nivel</string>
+    <string name="botonIncrementador">Incrementar puntuación</string>
+    <string name="botonDecrementador">Decrementar puntuación</string>
+    <string name="botonFinJuego">Fin de juego</string>
+    "-----------EndGameActivity-----------"
+    <string name="titulo">Detalles</string>
+    <string name="mensaje1">Juego terminado. Pulsa el botón para volver a empezar</string>
+    <string name="mensaje2">¡Felicidades, alcanzaste el nivel 10!</string>
+    <string name="finDelJuego">¡Fin del juego!</string>
+    <string name="botonEnviarDatos">Enviar datos...</string>
 </resources>

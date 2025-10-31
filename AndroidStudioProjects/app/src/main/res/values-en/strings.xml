@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">RetoComposables</string>
+    <string name="textField">Enter your name</string>
+    <string name="botonJugar">Play</string>
+    <string name="botonFinJuego">End game</string>
+    <string name="titulo">Details</string>
+    <string name="score">Score</string>
+    <string name="level">Level</string>
+    <string name="botonIncrementador">Increase score</string>
+    <string name="botonDecrementador">Decrease score</string>
+    <string name="mensaje2">Congratulations, you reached level 10!</string>
+    <string name="finDelJuego">Game Over!</string>
+    <string name="botonEnviarDatos">Send data...</string>
+    <string name="mensaje1">Game over. Press the button to start again</string>
+</resources>

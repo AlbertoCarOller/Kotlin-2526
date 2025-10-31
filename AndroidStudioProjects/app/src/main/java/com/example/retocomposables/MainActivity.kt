@@ -281,7 +281,7 @@ var sumarScoreYLevel: (Game) -> Pair<Int, Int> = { game ->
     // En caso de que level sea mayor a 1 hacemos el Random
     if (level >= 1) {
         // Incrementamos el valor de score de un número aleatorio entre 1 y el level
-        score += (Random.Default.nextInt(1, level + 1))
+        score += (Random.nextInt(1, level + 1))
         // En caso de que level sea 0 o 1, se suma 1 directamente
     } else {
         score++
@@ -325,10 +325,11 @@ fun goToEndGameActivity(context: Context, game: Game, level10: Boolean) {
     // Enviamos los datos con el .putExtra de los 'Intent'
     intent.putExtra("SCORE_KEY", game.score)
     intent.putExtra("LEVEL_KEY", game.level)
+    intent.putExtra("NAME_KEY", game.nombre)
     // Creamos el mensaje que se va a enviar a la 'EndGameActivity'
-    var mensaje = "Juego terminado. Pulsa el botón para volver a empezar ${game.nombre}"
+    var mensaje = "Juego terminado. Pulsa el botón para volver a empezar"
     if (level10) {
-        mensaje = "¡Felicidades, alcanzaste el nivel 10 ${game.nombre}!"
+        mensaje = "¡Felicidades, alcanzaste el nivel 10!"
     }
     intent.putExtra("MENSAJE_KEY", mensaje)
     // Iniciamos la otra actividad, con la función '.startActivity(intent)', pasándole el 'Intent' necesario
@@ -367,9 +368,9 @@ fun comprobarLevel10(context: Context, game: Game) {
  */
 var colorPorLevel: (game: Game) -> Color = {
     var color = Color.Red
-    if (it.level >= 3 && it.level <= 6) {
+    if (it.level in 3..6) {
         color = Color(0xFFFFa500)
-    } else if (it.level >= 7 && it.level <= 9) {
+    } else if (it.level in 7..9) {
         color = Color(0xFF006400)
     }
     color
