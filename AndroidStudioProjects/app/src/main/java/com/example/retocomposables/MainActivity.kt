@@ -161,7 +161,7 @@ class MainActivity : ComponentActivity() {
                 contentAlignment = Alignment.Center,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text("Hello ${game.nombre}!")
+                Text("${stringResource(R.string.saludo)} ${game.nombre}!")
             }
             // Fila con Textos y botón
             Row(modifier = Modifier.padding(5.dp)) {
@@ -246,7 +246,7 @@ class MainActivity : ComponentActivity() {
                     contentAlignment = Alignment.BottomCenter
                 ) {
                     StandardButton(
-                        "End Game",
+                        stringResource(R.string.botonFinJuego),
                         onClick = {
                             // Se le pasa el context y los valores del score y level necesarios
                             goToEndGameActivity(context = context, game, game.level == 10, mensajes)

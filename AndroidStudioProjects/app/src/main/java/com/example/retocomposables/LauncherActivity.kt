@@ -43,7 +43,7 @@ class LauncherActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     topBar = {
                         CenterAlignedTopAppBar(title = {
-                            Text(stringResource(R.string.tituloMain), fontSize = 40.sp)
+                            Text(stringResource(R.string.tituloMain), fontSize = 30.sp)
                         })
                     }) { innerPadding ->
                     Column(modifier = Modifier

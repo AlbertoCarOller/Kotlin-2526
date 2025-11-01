@@ -17,4 +17,6 @@
     <string name="finDelJuego">Game Over!</string>
     <string name="botonEnviarDatos">Send data...</string>
     <string name="mensaje1">Game over. Press the button to start again</string>
+    <string name="asunto">" Player score %s"</string>
+    <string name="cuerpo">Player $1%s has earned a score of $2%d points and has reached level $3%d</string>
 </resources>

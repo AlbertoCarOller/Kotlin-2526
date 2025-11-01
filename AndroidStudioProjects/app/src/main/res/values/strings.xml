@@ -12,7 +12,7 @@
     <string name="botonDecrementador">Decrementar puntuación</string>
     <string name="botonFinJuego">Fin de juego</string>
     <string name="mensajeBuenCamino">¡Vas en buen camino!</string>
-    <string name="Saludo">Hola</string>
+    <string name="saludo">Hola</string>
     "-----------EndGameActivity-----------"
     <string name="tituloEnd">Detalles</string>
     <string name="mensaje1">Juego terminado. Pulsa el botón para volver a empezar</string>
