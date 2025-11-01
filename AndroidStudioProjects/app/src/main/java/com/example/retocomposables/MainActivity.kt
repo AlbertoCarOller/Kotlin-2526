@@ -54,13 +54,14 @@ class MainActivity : ComponentActivity() {
         const val TAG = "MainActivity"
     }
 
-    // Con lateinit le decimos a Koytlin que pronto será inicializada para que no nos dé error
+    // Con lateinit le decimos a Kotlin que pronto será inicializada para que no nos dé error
     private lateinit var game: Game
 
     //private var score: Int = 0 //-> Se la pasaríamos a PrincipalStructure
     //private var level: Int = 0 //-> Se la pasaríamos a PrincipalStructure
 
     @OptIn(ExperimentalMaterial3Api::class)
+    // A partir de .onCreate tenemos el contexto de la Activity
     override fun onCreate(savedInstanceState: Bundle?) {
         // Recibimos el nombre
         val nombre = intent.getStringExtra("NAME_LOG_KEY") ?: "Invitado"
