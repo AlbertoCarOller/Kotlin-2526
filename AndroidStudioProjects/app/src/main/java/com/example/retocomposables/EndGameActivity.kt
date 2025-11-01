@@ -81,19 +81,23 @@ class EndGameActivity : ComponentActivity() {
                                         Text(stringResource(R.string.finDelJuego), fontSize = 40.sp)
                                         Spacer(modifier = Modifier.height(20.dp))
                                         Informacion(
-                                            stringResource(R.string.score), intent.getIntExtra("SCORE_KEY", 0),
-                                            25.sp, Color.Red
+                                            stringResource(R.string.score),
+                                            intent.getIntExtra("SCORE_KEY", 0),
+                                            25.sp,
+                                            Color.Red
                                         )
                                         Informacion(
-                                            stringResource(R.string.level), intent.getIntExtra("LEVEL_KEY", 0),
-                                            25.sp, Color.Red
+                                            stringResource(R.string.level),
+                                            intent.getIntExtra("LEVEL_KEY", 0),
+                                            25.sp,
+                                            Color.Red
                                         )
                                     }
                                 }
                                 Box(modifier = Modifier.fillMaxHeight(fraction = 0.4f)) {
                                     Row(
                                         horizontalArrangement = Arrangement.SpaceEvenly,
-                                        verticalAlignment =  Alignment.CenterVertically,
+                                        verticalAlignment = Alignment.CenterVertically,
                                         modifier = Modifier.fillMaxWidth()
                                     ) {
                                         /* Image(painter = painterResource(id = R.drawable.nombre_imagen)) ->
@@ -107,8 +111,22 @@ class EndGameActivity : ComponentActivity() {
                                             painter = painterResource(id = R.drawable.email),
                                             stringResource(R.string.botonEnviarDatos)
                                         )
+                                        // Creamos un Pair con el asunto y el cuerpo
+                                        val asuntoYCuerpo = Pair(
+                                            stringResource(R.string.asunto)
+                                                .format(intent.getStringExtra("NAME_KEY")),
+                                            stringResource(R.string.cuerpo)
+                                                .format(
+                                                    intent.getStringExtra("NAME_KEY"),
+                                                    intent.getIntExtra("SCORE_KEY", 0),
+                                                    intent.getIntExtra("LEVEL_KEY", 0)
+                                                )
+                                        )
                                         Button(onClick = {
-                                            enviarDatos(intent = intent, context = contextEndGame)
+                                            enviarDatos(
+                                                context = contextEndGame,
+                                                asuntoYCuerpo = asuntoYCuerpo
+                                            )
                                             Log.d("Enviar datos...", "Enviar datos... pulsado")
                                         }) {
                                             Text(stringResource(R.string.botonEnviarDatos))
@@ -143,20 +161,17 @@ fun Informacion(
  * el level y el score, lo mandamos mediante un intent implícito, es decir que
  * es pide abrir otras apps fuera de mi propia app, fuera de mis activity
  */
-fun enviarDatos(intent: Intent, context: Context) {
+fun enviarDatos(context: Context, asuntoYCuerpo: Pair<String, String>) {
     // Creamos un intent implícito, tenemos que pasarle la acción, que en este caso es ACTION_SEND (enviar)
     val intentEnvio = Intent(Intent.ACTION_SEND)
     // Este es el asunto
     intentEnvio.putExtra(
-        "ASUNTO_KEY", "Puntuación del jugador" +
-                " ${intent.getStringExtra("NAME_KEY") ?: "Sin datos"}"
+        "ASUNTO_KEY", asuntoYCuerpo.first
     )
     // Este es el cuerpo
     intentEnvio.putExtra(
         "CUERPO_KEY",
-        "El jugador ${intent.getStringExtra("NAME_KEY") ?: "Sin datos"} ha obtenido una puntuación" +
-                " de ${intent.getIntExtra("SCORE_KEY", 0)} puntos y ha alcanzado" +
-                " el nivel ${intent.getIntExtra("LEVEL_KEY", 0)}"
+        asuntoYCuerpo.second
     )
     // Le decimos que el tipo de apps que tiene que abrir son apps de texto plano con .type
     intentEnvio.type = "text/plain"
