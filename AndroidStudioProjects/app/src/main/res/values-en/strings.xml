@@ -4,7 +4,11 @@
     <string name="textField">Enter your name</string>
     <string name="botonJugar">Play</string>
     <string name="botonFinJuego">End game</string>
-    <string name="titulo">Details</string>
+    <string name="mensajeBuenCamino">You\'re on the right track</string>
+    <string name="Saludo">Hello</string>
+    <string name="tituloEnd">Details</string>
+    <string name="label">Player name</string>
+    <string name="tituloMain">Super Game Counter!</string>
     <string name="score">Score</string>
     <string name="level">Level</string>
     <string name="botonIncrementador">Increase score</string>

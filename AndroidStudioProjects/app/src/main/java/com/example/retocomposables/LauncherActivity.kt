@@ -25,6 +25,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.retocomposables.ui.theme.RetoComposablesTheme
@@ -42,7 +43,7 @@ class LauncherActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     topBar = {
                         CenterAlignedTopAppBar(title = {
-                            Text("LauncherActivity", fontSize = 50.sp)
+                            Text(stringResource(R.string.tituloMain), fontSize = 40.sp)
                         })
                     }) { innerPadding ->
                     Column(modifier = Modifier
@@ -53,16 +54,16 @@ class LauncherActivity : ComponentActivity() {
                         // Obtenemos el contexto de esta actividad
                         val contextLaucher = LocalContext.current
                         // Le solicitamos al usuario que introduzca su nombre
-                        Text("Introduce tu nombre:")
+                        Text(stringResource(R.string.textField))
                         // Con TextField cambiamos el valor de la varible, del nombre
                         TextField(nombre, onValueChange = { newText ->
                             nombre = newText
-                        })
+                        }, label = {Text(stringResource(R.string.label))})
                         Spacer(modifier = Modifier.height(40.dp))
                         Button(onClick = {
                             goToMainActivity(contextLaucher, nombre)
                         }) {
-                            Text("Jugar")
+                            Text(stringResource(R.string.botonJugar))
                         }
                     }
                 }

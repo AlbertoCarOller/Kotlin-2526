@@ -33,12 +33,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.retocomposables.ui.theme.RetoComposablesTheme
 import kotlin.random.Random
+
+/* NOTA: Las activities funcionan como una pila, cuando vas hacia delante, es decir navegas hacia delante
+* (intent) la actividad anterior queda guardada en la pila, pero cuando navegamos hacia atrás la
+* actividad se detruye de la pila y se redibuja, se destruye por finalización por eso ya la mochila
+* no puede mantener los datos, esta se destruye también, pero cuando se destruye por re-creación
+* la mochila sigue intacta */
 
 class MainActivity : ComponentActivity() {
     // Valor constante estático
@@ -73,7 +81,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     topBar = {
                         CenterAlignedTopAppBar(title = {
-                            Text("Super Game Counter")
+                            Text(stringResource(R.string.tituloMain))
                         })
                     }) { innerPadding ->
                     PrincipalStructure(
@@ -113,7 +121,9 @@ class MainActivity : ComponentActivity() {
      * 'onClick() -> Unit'
      */
     @Composable
-    fun StandardButton(label: String, modifier: Modifier = Modifier, onClick: () -> Unit) {
+    fun StandardButton(
+        label: String, modifier: Modifier = Modifier, onClick: () -> Unit
+    ) {
         Button(modifier = modifier, onClick = onClick) {
             Text(label)
         }
@@ -139,6 +149,12 @@ class MainActivity : ComponentActivity() {
              en este caso el de la estructura principal, llama a la Activity principal siempre */
         // Estructura principal
         Column(modifier = modifier) {
+            // Obtenemos los mensajes
+            val mensajes = Pair(
+                stringResource(R.string.mensaje1),
+                stringResource(R.string.mensaje2)
+            )
+
             // Saludo
             Box(
                 contentAlignment = Alignment.Center,
@@ -164,9 +180,9 @@ class MainActivity : ComponentActivity() {
                         verticalArrangement = Arrangement.SpaceBetween
                     ) {
                         // Score
-                        ShowVariables("Score", score, letraSize = 20.sp)
+                        ShowVariables(stringResource(R.string.score), score, letraSize = 20.sp)
                         // Level
-                        ShowVariables("Level", level, letraSize = 20.sp)
+                        ShowVariables(stringResource(R.string.level), level, letraSize = 20.sp)
                     }
                 }
                 // Centramos el botón envolviéndolo en un Colum
@@ -178,7 +194,7 @@ class MainActivity : ComponentActivity() {
                         .fillMaxWidth()
                 ) {
                     // Creamos el botón de incrementar
-                    StandardButton("Increase Score", onClick = {
+                    StandardButton(stringResource(R.string.botonIncrementador), onClick = {
                         val valores = sumarScoreYLevel(game)
                         // Actualizamos los valores
                         score = valores.first
@@ -188,12 +204,12 @@ class MainActivity : ComponentActivity() {
                         game.level = level
                         // Log.d() -> Es para escribir en el LogCat
                         Log.d("Increase Score", "Button Increase Score clicked")
-                        comprobarLevel10(context, game)
+                        comprobarLevel10(context, game, mensajes)
                     })
                     // Creamos espacio entre los dos botones
                     Spacer(modifier = Modifier.height(5.dp))
                     // Creamos el botón de decrementar
-                    StandardButton("Decrement Score", onClick = {
+                    StandardButton(stringResource(R.string.botonDecrementador), onClick = {
                         // Actualizamos los valores
                         val resultados = restarScoreYLevel(game)
                         score = resultados.first
@@ -203,7 +219,7 @@ class MainActivity : ComponentActivity() {
                         game.level = level
                         // Log.d() -> Es para escribir en el LogCat
                         Log.d("Decrement Score", "Button Decrement Score clicked")
-                        comprobarLevel10(context, game)
+                        comprobarLevel10(context, game, mensajes)
                     })
                 }
             }
@@ -228,11 +244,13 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxHeight(fraction = 0.8f),
                     contentAlignment = Alignment.BottomCenter
                 ) {
-                    StandardButton("End Game", onClick = {
-                        // Se le pasa el context y los valores del score y level necesarios
-                        goToEndGameActivity(context = context, game, game.level == 10)
-                        Log.d("End Game", "Button End Game clicked")
-                    })
+                    StandardButton(
+                        "End Game",
+                        onClick = {
+                            // Se le pasa el context y los valores del score y level necesarios
+                            goToEndGameActivity(context = context, game, game.level == 10, mensajes)
+                            Log.d("End Game", "Button End Game clicked")
+                        })
                 }
             }
         }
@@ -319,7 +337,12 @@ var restarScoreYLevel: (Game) -> Pair<Int, Int> = { game ->
  * y después vamos a pasarle el score y level actual para posteriormente crear un 'Intent' que
  * lleve desde esta actividad a 'EndGameActivity' pasándole como argumento el 'score' y el 'level'
  */
-fun goToEndGameActivity(context: Context, game: Game, level10: Boolean) {
+fun goToEndGameActivity(
+    context: Context,
+    game: Game,
+    level10: Boolean,
+    mensajes: Pair<String, String>
+) {
     // Creamos el 'Intent' con el contexto de actual, es decir esta clase, hasta la clase 'EndGameActivity'
     val intent = Intent(context, EndGameActivity::class.java)
     // Enviamos los datos con el .putExtra de los 'Intent'
@@ -327,9 +350,9 @@ fun goToEndGameActivity(context: Context, game: Game, level10: Boolean) {
     intent.putExtra("LEVEL_KEY", game.level)
     intent.putExtra("NAME_KEY", game.nombre)
     // Creamos el mensaje que se va a enviar a la 'EndGameActivity'
-    var mensaje = "Juego terminado. Pulsa el botón para volver a empezar"
+    var mensaje = mensajes.first
     if (level10) {
-        mensaje = "¡Felicidades, alcanzaste el nivel 10!"
+        mensaje = mensajes.second
     }
     intent.putExtra("MENSAJE_KEY", mensaje)
     // Iniciamos la otra actividad, con la función '.startActivity(intent)', pasándole el 'Intent' necesario
@@ -344,7 +367,7 @@ fun goToEndGameActivity(context: Context, game: Game, level10: Boolean) {
 fun MensajeLevel5(mostrar: Boolean) {
     if (mostrar) {
         Text(
-            "¡Vas en buen camino!",
+            stringResource(R.string.mensajeBuenCamino),
             fontSize = 30.sp,
             color = Color.Green,
             fontWeight = FontWeight.Bold
@@ -356,9 +379,9 @@ fun MensajeLevel5(mostrar: Boolean) {
  * Esta función va a comprobar que el level sea 10 para ir así a la
  * pantalla 'EndGameActivity'
  */
-fun comprobarLevel10(context: Context, game: Game) {
+fun comprobarLevel10(context: Context, game: Game, mensajes: Pair<String, String>) {
     if (game.level == 10) {
-        goToEndGameActivity(context = context, game, true)
+        goToEndGameActivity(context = context, game, true, mensajes)
     }
 }
 
@@ -366,12 +389,12 @@ fun comprobarLevel10(context: Context, game: Game) {
  * Esta función va a devolver un color, este color será el que
  * se aplicará a un Box dependiendo de las comprobaciones de esta función
  */
-var colorPorLevel: (game: Game) -> Color = {
-    var color = Color.Red
+var colorPorLevel: @Composable (game: Game) -> Color = {
+    var color = colorResource(id = R.color.red)
     if (it.level in 3..6) {
-        color = Color(0xFFFFa500)
+        color = colorResource(id = R.color.amarillo)
     } else if (it.level in 7..9) {
-        color = Color(0xFF006400)
+        color = colorResource(R.color.verde)
     }
     color
 }

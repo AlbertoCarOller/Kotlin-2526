@@ -29,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -43,11 +44,11 @@ class EndGameActivity : ComponentActivity() {
             RetoComposablesTheme {
                 Scaffold(topBar = {
                     CenterAlignedTopAppBar({
-                        Text("Detalles")
+                        Text(stringResource(R.string.tituloEnd))
                     })
                 }) { innerPadding ->
                     // Obtenemos el context de esta activity
-                    var contextEndGame = LocalContext.current
+                    val contextEndGame = LocalContext.current
                     // Creamos la columna principal que va a contener la información
                     Column(
                         modifier = Modifier
@@ -75,23 +76,24 @@ class EndGameActivity : ComponentActivity() {
                             contentAlignment = Alignment.Center
                         ) {
                             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                Box(modifier = Modifier.fillMaxHeight(fraction = 0.7f)) {
+                                Box(modifier = Modifier.fillMaxHeight(fraction = 0.6f)) {
                                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                        Text("Game Over!", fontSize = 50.sp)
+                                        Text(stringResource(R.string.finDelJuego), fontSize = 40.sp)
                                         Spacer(modifier = Modifier.height(20.dp))
                                         Informacion(
-                                            "Score", intent.getIntExtra("SCORE_KEY", 0),
-                                            30.sp, Color.Red
+                                            stringResource(R.string.score), intent.getIntExtra("SCORE_KEY", 0),
+                                            25.sp, Color.Red
                                         )
                                         Informacion(
-                                            "Level", intent.getIntExtra("LEVEL_KEY", 0),
-                                            30.sp, Color.Red
+                                            stringResource(R.string.level), intent.getIntExtra("LEVEL_KEY", 0),
+                                            25.sp, Color.Red
                                         )
                                     }
                                 }
-                                Box(modifier = Modifier.fillMaxHeight(fraction = 0.3f)) {
+                                Box(modifier = Modifier.fillMaxHeight(fraction = 0.4f)) {
                                     Row(
                                         horizontalArrangement = Arrangement.SpaceEvenly,
+                                        verticalAlignment =  Alignment.CenterVertically,
                                         modifier = Modifier.fillMaxWidth()
                                     ) {
                                         /* Image(painter = painterResource(id = R.drawable.nombre_imagen)) ->
@@ -103,13 +105,13 @@ class EndGameActivity : ComponentActivity() {
                                         * también una descripción*/
                                         Image(
                                             painter = painterResource(id = R.drawable.email),
-                                            "Envío"
+                                            stringResource(R.string.botonEnviarDatos)
                                         )
                                         Button(onClick = {
                                             enviarDatos(intent = intent, context = contextEndGame)
                                             Log.d("Enviar datos...", "Enviar datos... pulsado")
                                         }) {
-                                            Text("Enviar datos...")
+                                            Text(stringResource(R.string.botonEnviarDatos))
                                         }
                                     }
                                 }
