@@ -61,7 +61,10 @@ class LauncherActivity : ComponentActivity() {
                         }, label = {Text(stringResource(R.string.label))})
                         Spacer(modifier = Modifier.height(40.dp))
                         Button(onClick = {
-                            goToMainActivity(contextLaucher, nombre)
+                            // Comprobamos que haya un nombre válido antes de pasar a la siguiente actividad
+                            if (!nombre.isBlank()) {
+                                goToMainActivity(contextLaucher, nombre)
+                            }
                         }) {
                             Text(stringResource(R.string.botonJugar))
                         }
