@@ -145,6 +145,9 @@ class MainActivity : ComponentActivity() {
           tipo de objeto */
         var score by rememberSaveable { mutableIntStateOf(game.score) }
         var level by rememberSaveable { mutableIntStateOf(game.score) }
+        // Guardamos los datos en game para que así game mantenga los datos después de una destrucción de la Activity
+        game.score = score
+        game.level = level
         // Color para el fondo donde se ve la puntuación
         //var color by rememberSaveable { mutableStateOf(Color.White) } -> Mal, el color no es un tipo básico
         // LocalContext.current -> Pasa el context actual de esta actividad
