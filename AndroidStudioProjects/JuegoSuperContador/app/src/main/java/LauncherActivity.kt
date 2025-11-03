@@ -75,7 +75,8 @@ class LauncherActivity : ComponentActivity() {
     }
 }
 
-fun goToMainActivity(context: Context, nombre: String) {
+var goToMainActivity: (context: Context, nombre: String) -> Unit = {
+    context, nombre ->
     val intent = Intent(context, MainActivity::class.java)
     intent.putExtra("NAME_LOG_KEY", nombre)
     context.startActivity(intent)
