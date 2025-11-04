@@ -18,6 +18,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -46,19 +47,20 @@ class LauncherActivity : ComponentActivity() {
                             Text(stringResource(R.string.tituloMain), fontSize = 30.sp)
                         })
                     }) { innerPadding ->
-                    Column(modifier = Modifier
-                        .padding(innerPadding)
-                        .fillMaxSize(),
+                    Column(
+                        modifier = Modifier
+                            .padding(innerPadding)
+                            .fillMaxSize(),
                         horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.Center) {
+                        verticalArrangement = Arrangement.Center
+                    ) {
                         // Obtenemos el contexto de esta actividad
                         val contextLaucher = LocalContext.current
                         // Le solicitamos al usuario que introduzca su nombre
                         Text(stringResource(R.string.textField))
                         // Con TextField cambiamos el valor de la varible, del nombre
-                        TextField(nombre, onValueChange = { newText ->
-                            nombre = newText
-                        }, label = {Text(stringResource(R.string.label))})
+                        TextFieldPersonalizado(nombre, stringResource(R.string.label),
+                            ) { newName -> nombre = newName }
                         Spacer(modifier = Modifier.height(40.dp))
                         Button(onClick = {
                             // Comprobamos que haya un nombre válido antes de pasar a la siguiente actividad
@@ -75,9 +77,25 @@ class LauncherActivity : ComponentActivity() {
     }
 }
 
-var goToMainActivity: (context: Context, nombre: String) -> Unit = {
-    context, nombre ->
+/**
+ * Esta función va a llevar el nombre a la MainActivity a la vez
+ * que al propio usuario
+ */
+var goToMainActivity: (context: Context, nombre: String) -> Unit = { context, nombre ->
     val intent = Intent(context, MainActivity::class.java)
     intent.putExtra("NAME_LOG_KEY", nombre)
     context.startActivity(intent)
+}
+
+/**
+ * Este "widget" va representa la personalización de un TextField a nuestro gusto,
+ * en este caso utilizamos una función de orden superior para modificar fuera de este
+ * el valor del nombre
+ */
+@Composable
+fun TextFieldPersonalizado(value: String, label: String, onClickText: (String) -> Unit) {
+    TextField(
+        value = value,
+        onValueChange = { newName -> onClickText(newName) },
+        label = { Text(label) })
 }
