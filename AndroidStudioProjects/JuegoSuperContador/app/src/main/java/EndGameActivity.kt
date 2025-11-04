@@ -124,8 +124,8 @@ class EndGameActivity : ComponentActivity() {
                                         )
                                         Button(onClick = {
                                             enviarDatos(
-                                                context = contextEndGame,
-                                                asuntoYCuerpo = asuntoYCuerpo
+                                                contextEndGame,
+                                                asuntoYCuerpo
                                             )
                                             Log.d("Enviar datos...", "Enviar datos... pulsado")
                                         }) {
@@ -146,13 +146,12 @@ class EndGameActivity : ComponentActivity() {
  * Este "widget" muestra información, muestra un texto con un tamaño
  * y color que pasaremos por parámetros
  */
-@Composable
-fun Informacion(
+var Informacion: @Composable (
     mensaje: String,
     valor: Int,
-    letraSize: TextUnit = TextUnit.Unspecified,
-    color: Color = Color.Black
-) {
+    letraSize: TextUnit,
+    color: Color
+) -> Unit = { mensaje, valor, letraSize, color ->
     Text("$mensaje = $valor", fontSize = letraSize, color = color)
 }
 
@@ -161,20 +160,21 @@ fun Informacion(
  * el level y el score, lo mandamos mediante un intent implícito, es decir que
  * es pide abrir otras apps fuera de mi propia app, fuera de mis activity
  */
-fun enviarDatos(context: Context, asuntoYCuerpo: Pair<String, String>) {
-    // Creamos un intent implícito, tenemos que pasarle la acción, que en este caso es ACTION_SEND (enviar)
-    val intentEnvio = Intent(Intent.ACTION_SEND)
-    // Este es el asunto
-    intentEnvio.putExtra(
-        "ASUNTO_KEY", asuntoYCuerpo.first
-    )
-    // Este es el cuerpo
-    intentEnvio.putExtra(
-        "CUERPO_KEY",
-        asuntoYCuerpo.second
-    )
-    // Le decimos que el tipo de apps que tiene que abrir son apps de texto plano con .type
-    intentEnvio.type = "text/plain"
-    // Abrimos la actividad, que en este caso es la ventana emergente de aplicaciones
-    context.startActivity(intentEnvio)
-}
+var enviarDatos: (context: Context, asuntoYCuerpo: Pair<String, String>) -> Unit =
+    { context, asuntoYCuerpo ->
+        // Creamos un intent implícito, tenemos que pasarle la acción, que en este caso es ACTION_SEND (enviar)
+        val intentEnvio = Intent(Intent.ACTION_SEND)
+        // Este es el asunto
+        intentEnvio.putExtra(
+            "ASUNTO_KEY", asuntoYCuerpo.first
+        )
+        // Este es el cuerpo
+        intentEnvio.putExtra(
+            "CUERPO_KEY",
+            asuntoYCuerpo.second
+        )
+        // Le decimos que el tipo de apps que tiene que abrir son apps de texto plano con .type
+        intentEnvio.type = "text/plain"
+        // Abrimos la actividad, que en este caso es la ventana emergente de aplicaciones
+        context.startActivity(intentEnvio)
+    }

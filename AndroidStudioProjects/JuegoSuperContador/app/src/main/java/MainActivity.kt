@@ -254,7 +254,7 @@ class MainActivity : ComponentActivity() {
                         stringResource(R.string.botonFinJuego),
                         onClick = {
                             // Se le pasa el context y los valores del score y level necesarios
-                            goToEndGameActivity(context = context, game, game.level == 10, mensajes)
+                            goToEndGameActivity(context, game, game.level == 10, mensajes)
                             Log.d("End Game", "Button End Game clicked")
                         })
                 }
@@ -343,12 +343,12 @@ var restarScoreYLevel: (Game) -> Pair<Int, Int> = { game ->
  * y después vamos a pasarle el score y level actual para posteriormente crear un 'Intent' que
  * lleve desde esta actividad a 'EndGameActivity' pasándole como argumento el 'score' y el 'level'
  */
-fun goToEndGameActivity(
+var goToEndGameActivity: (
     context: Context,
     game: Game,
     level10: Boolean,
     mensajes: Pair<String, String>
-) {
+) -> Unit = { context, game, level10, mensajes ->
     // Creamos el 'Intent' con el contexto de actual, es decir esta clase, hasta la clase 'EndGameActivity'
     val intent = Intent(context, EndGameActivity::class.java)
     // Enviamos los datos con el .putExtra de los 'Intent'
@@ -369,8 +369,7 @@ fun goToEndGameActivity(
  * Este "widget" va a mostrar un texto en verde
  * cuando se cumpla una condición pasada por parámetros
  */
-@Composable
-fun MensajeLevel5(mostrar: Boolean) {
+var MensajeLevel5: @Composable (mostrar: Boolean) -> Unit = { mostrar ->
     if (mostrar) {
         Text(
             stringResource(R.string.mensajeBuenCamino),
@@ -385,11 +384,12 @@ fun MensajeLevel5(mostrar: Boolean) {
  * Esta función va a comprobar que el level sea 10 para ir así a la
  * pantalla 'EndGameActivity'
  */
-fun comprobarLevel10(context: Context, game: Game, mensajes: Pair<String, String>) {
-    if (game.level == 10) {
-        goToEndGameActivity(context = context, game, true, mensajes)
+var comprobarLevel10: (context: Context, game: Game, mensajes: Pair<String, String>) -> Unit =
+    { context, game, mensajes ->
+        if (game.level == 10) {
+            goToEndGameActivity(context, game, true, mensajes)
+        }
     }
-}
 
 /**
  * Esta función va a devolver un color, este color será el que
