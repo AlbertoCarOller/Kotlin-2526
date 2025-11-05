@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Inspiration Logger</string>
+    "---------------LauncherActivity---------------"
+    <string name="tituloLauncher">Resgistro de inspiraciones</string>
+    <string name="mensajeIntroduceNombre">Introduce tu nombre</string>
+    <string name="nombreLabel">Nombre</string>
+    <string name="mensajeIntroduceEdad">Introduce tu edad</string>
+    <string name="edadLabel">Edad</string>
+    <string name="login">Iniciar</string>
+</resources>
