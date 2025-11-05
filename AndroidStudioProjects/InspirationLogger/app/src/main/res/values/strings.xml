@@ -7,4 +7,10 @@
     <string name="mensajeIntroduceEdad">Introduce tu edad</string>
     <string name="edadLabel">Edad</string>
     <string name="login">Iniciar</string>
+    "---------------MainActivity---------------"
+    <string name="saludoCreativo">Creativo %1$s, tienes %2$s años</string>
+    <string name="mostrarEnergia">Energía -> %d</string>
+    <string name="mostrarIdeas">Ideas -> %d</string>
+    <string name="botonInspiracion">Buscar Inspiración</string>
+    <string name="botonCafe">Tomar un Café</string>
 </resources>

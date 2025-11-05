@@ -1,5 +1,7 @@
 package com.example.inspirationlogger
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -23,6 +25,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -38,10 +41,13 @@ class LauncherActivity : ComponentActivity() {
             // Las varibles a utilizar y que necesitamos guardar
             var nombre by rememberSaveable { mutableStateOf("") }
             var edad by rememberSaveable { mutableStateOf("") }
+            // Obtenemos el contexto
+            val context = LocalContext.current
             // Creamos una función lambda que nos va a realizar la acción al apretar el botón
-            var onClickButtonPer: () -> Unit = {
+            val onClickButtonPer: () -> Unit = {
+                // Comprbamos que tanto el nombre como la edad sean correctos
                 if (!nombre.isEmpty() && (edad.isDigitsOnly() && !edad.isEmpty())) {
-                    // TODO: métdo que lleva a otra pantalla
+                    goToMainActivity(context, nombre, edad)
                 }
             }
             InspirationLoggerTheme {
@@ -108,3 +114,18 @@ var Campo: @Composable (String, (String) -> Unit, String, String) -> Unit =
             )
         }
     }
+
+/**
+ * Esta función va a pasar el nombre y la edad a
+ * la 'MainActivity' junto con el cambio de pantalla del
+ * usuario
+ */
+var goToMainActivity: (Context, String, String) -> Unit = { context, nombre, edad ->
+    // Creamos el intent hasta la 'MainActivity'
+    var intent = Intent(context, MainActivity::class.java)
+    // Pasamos los parámetros necesarios
+    intent.putExtra("NAME_KEY", nombre)
+    intent.putExtra("YEARS_KEY", edad)
+    // Vamos a la 'MainActivity'
+    context.startActivity(intent)
+}
