@@ -13,4 +13,6 @@
     <string name="mostrarIdeas">Ideas -> %d</string>
     <string name="botonInspiracion">Buscar Inspiración</string>
     <string name="botonCafe">Tomar un Café</string>
+    <string name="mensajeDescanso">¡Necesitas un descanso!</string>
+    <string name="mensajeRacha">¡Estás en racha creativa!</string>
 </resources>

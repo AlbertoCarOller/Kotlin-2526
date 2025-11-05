@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -27,6 +28,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Paint
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -34,6 +36,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.inspirationlogger.ui.theme.InspirationLoggerTheme
+import org.w3c.dom.Text
 import java.util.Random
 
 class MainActivity : ComponentActivity() {
@@ -84,6 +87,13 @@ class MainActivity : ComponentActivity() {
                                 painter = cambiarBombilla(ideas),
                                 contentDescription = "Bombilla",
                             )
+                            mensaje(
+                                energia < 20,
+                                stringResource(R.string.mensajeDescanso),
+                                /* .align(Alignment.TopCenter) -> Dentro de un Box puedes alinearte
+                                 a ti mismo, le dices a tu padre como alinearte, en este caso arriba en el centro */
+                                Modifier.align(Alignment.TopCenter)
+                            )
                             // Fila que contiene la información de la energía y las ideas
                             Row(
                                 Modifier.fillMaxSize(),
@@ -121,7 +131,11 @@ class MainActivity : ComponentActivity() {
                                 })
                             botonAccion(
                                 stringResource(R.string.botonCafe),
-                                {})
+                                {
+                                    var resultado = sumarEnergiaYRestarIdeas(energia, ideas)
+                                    energia = resultado.first
+                                    ideas = resultado.second
+                                })
                         }
                     }
                 }
@@ -148,11 +162,29 @@ var restarEnergiaYAumentarIdeas: (Int, Int) -> Pair<Int, Int> = { energia, ideas
     // Creamos las variables que van a ser el nuevo valor de la energía y las ideas
     var energiaC = energia
     var ideasC = ideas
-    // Generamos el número que se le va a restar a la energia
-    var numRestarEnergia = kotlin.random.Random.nextInt(10, 26)
-    if (numRestarEnergia <= energiaC) energiaC -= numRestarEnergia else energiaC = 0
-    // Sumamos directamente a la idea el número generado
-    ideasC += kotlin.random.Random.nextInt(1, 6)
+    // Si la energía es mayor a 0 se puede restar y por lo tanto sumar ideas, en caso contrario no se podrá ni sumar ideas
+    if (energia > 0) {
+        // Generamos el número que se le va a restar a la energia
+        var numRestarEnergia = kotlin.random.Random.nextInt(10, 26)
+        if (numRestarEnergia <= energiaC) energiaC -= numRestarEnergia else energiaC = 0
+        // Sumamos directamente a la idea el número generado
+        ideasC += kotlin.random.Random.nextInt(1, 6)
+    }
+    Pair(energiaC, ideasC)
+}
+
+/**
+ * Esta función va a sumar energía en un número aleatorio en caso de que este sea distinto de 100
+ * y aún queden ideas para restar, porque estas se restará de 1 en 1
+ */
+var sumarEnergiaYRestarIdeas: (Int, Int) -> Pair<Int, Int> = { energia, ideas ->
+    var energiaC = energia
+    var ideasC = ideas
+    if (energia != 100 && ideas > 0) {
+        var numSumaEnergia = kotlin.random.Random.nextInt(15, 31)
+        if ((energiaC + numSumaEnergia) <= 100) energiaC += numSumaEnergia else energiaC = 100
+        ideasC--
+    }
     Pair(energiaC, ideasC)
 }
 
@@ -163,4 +195,16 @@ var restarEnergiaYAumentarIdeas: (Int, Int) -> Pair<Int, Int> = { energia, ideas
 var cambiarBombilla: @Composable (Int) -> Painter = {
     if (it >= 5) painterResource(R.drawable.bombilla_encendida)
     else painterResource(R.drawable.bombilla_apagada)
+}
+
+/**
+ * Esta función va a mostrar un mensaje en caso de que se cumpla
+ * una condición
+ */
+var mensaje: @Composable (Boolean, String, Modifier) -> Unit = { cumple, mensaje, modifier ->
+    if (cumple) Text(
+        mensaje, fontSize = 25.sp,
+        color = colorResource(R.color.rojo),
+        modifier = modifier
+    )
 }
