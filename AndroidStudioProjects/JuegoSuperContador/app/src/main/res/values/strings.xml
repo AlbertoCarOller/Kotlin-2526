@@ -20,7 +20,7 @@
     <string name="finDelJuego">¡Fin del juego!</string>
     <string name="botonEnviarDatos">Enviar datos...</string>
     <string name="asunto">Puntuación del jugador %s</string>
-    "Se debe de poner $1... porque se necesita pasar el orden, ya que al traducir puede cambiar el
+    "Se debe de poner %1$s... porque se necesita pasar el orden, ya que al traducir puede cambiar el
     orden de las palabras, así mantenemos el orden, con un String normal podríamos hacerlo como en Java,
     es decir sin $1..."
     <string name="cuerpo">El jugador %1$s ha obtenido una puntuación de %2$d puntos y ha alcanzado el nivel %3$d</string>
