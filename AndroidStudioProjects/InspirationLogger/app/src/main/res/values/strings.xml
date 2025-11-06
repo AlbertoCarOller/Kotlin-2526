@@ -16,4 +16,9 @@
     <string name="mensajeDescanso">¡Necesitas un descanso!</string>
     <string name="mensajeRacha">¡Estás en racha creativa!</string>
     <string name="focus">Modo focus</string>
+    <string name="botonEnd">Terminar</string>
+    "---------------EndActivity---------------"
+    <string name="resultados">Resultados</string>
+    <string name="botonCompartir">Compartir</string>
+    <string name="mensajeEnvio">%1$s ha terminado el juego</string>
 </resources>

@@ -1,5 +1,7 @@
 package com.example.inspirationlogger
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -30,6 +32,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -149,6 +152,12 @@ class MainActivity : ComponentActivity() {
                                     energia = resultado.first
                                     ideas = resultado.second
                                 })
+                            var context = LocalContext.current
+                            botonAccion(
+                                stringResource(R.string.botonEnd),
+                                {
+                                    goToEndActivity(context, energia, ideas)
+                                })
                         }
                     }
                 }
@@ -227,4 +236,14 @@ var mensaje: @Composable (Boolean, String, Modifier) -> Unit = { cumple, mensaje
         color = colorResource(R.color.rojo),
         modifier = modifier
     )
+}
+
+var goToEndActivity: (Context, Int, Int) -> Unit = {
+    context ,energia, ideas ->
+    var intent = Intent(context, EndActivity::class.java)
+    // Añadimos los extras
+    intent.putExtra("ENERGIA_KEY", energia)
+    intent.putExtra("IDEAS_KEY", ideas)
+    intent.putExtra("NAME_KEY", intent.getStringExtra("NAME_KEY"))
+    context.startActivity(intent)
 }

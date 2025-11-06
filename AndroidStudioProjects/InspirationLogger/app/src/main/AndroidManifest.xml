@@ -15,6 +15,9 @@
             android:name=".MainActivity"
             android:exported="false" />
         <activity
+            android:name=".EndActivity"
+            android:exported="false" />
+        <activity
             android:name=".LauncherActivity"
             android:exported="true"
             android:label="@string/app_name"
