@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">HeroesDeOro</string>
+    "------------LauncherActivity------------"
+    <string name="tituloStart">Heroes de oro</string>
+    <string name="pedirHeroe">Introduce el nombre del héroe</string>
+    <string name="labelHeroe">Nombre del héroe</string>
+    <string name="botonParaComenzar">Comenzar aventura</string>
+    "------------LauncherActivity------------"
+    <string name="saludoHeroe">Bienvenid@ %1$s, vamos a por oro</string>
+    <string name="mostrarSalud">Salud -> %d</string>
+    <string name="mostrarOro">Oro -> %d</string>
+    <string name="modoRiesgo">Modo Riesgo</string>
+</resources>
