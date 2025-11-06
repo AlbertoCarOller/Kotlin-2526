@@ -16,6 +16,8 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Switch
+import androidx.compose.material3.SwitchColors
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -25,10 +27,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.graphics.Paint
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -36,8 +37,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.inspirationlogger.ui.theme.InspirationLoggerTheme
-import org.w3c.dom.Text
-import java.util.Random
 
 class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3Api::class)
@@ -50,6 +49,7 @@ class MainActivity : ComponentActivity() {
             // Creamos las variables necesarias
             var energia by rememberSaveable { mutableStateOf(100) }
             var ideas by rememberSaveable { mutableStateOf(0) }
+            var focusMode by rememberSaveable { mutableStateOf(false) }
             InspirationLoggerTheme {
                 Scaffold(topBar = {
                     CenterAlignedTopAppBar(
@@ -84,7 +84,7 @@ class MainActivity : ComponentActivity() {
                                     .fillMaxSize()
                                     .alpha(0.4f),
                                 contentScale = ContentScale.Crop,
-                                painter = cambiarBombilla(ideas),
+                                painter = cambiarFondo(ideas, focusMode),
                                 contentDescription = "Bombilla",
                             )
                             mensaje(
@@ -115,6 +115,19 @@ class MainActivity : ComponentActivity() {
                                     color = colorResource(R.color.verde),
 
                                     )
+                            }
+                            // Apartado focus
+                            Row(Modifier.align(Alignment.BottomCenter)
+                                .fillMaxWidth(0.5f),
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.SpaceEvenly) {
+                                // Switch -> Interrupor que realiza una acción dependiendo de su valor (boolean)
+                                Switch(
+                                    checked = focusMode,
+                                    onCheckedChange = { focusMode = it },
+                                    )
+                                Text(stringResource(R.string.focus),
+                                    fontWeight = FontWeight.Bold)
                             }
                         }
                         Column(
@@ -190,11 +203,18 @@ var sumarEnergiaYRestarIdeas: (Int, Int) -> Pair<Int, Int> = { energia, ideas ->
 
 /**
  * Esta función va a cambiar la imagen de fondo de la bombilla
- * dependiendo del nivel de ideas actual
+ * dependiendo del nivel de ideas actual, también tendrá en cuenta
+ * si está activado el focus mode, en caso de este cambiará el fondo
+ * al de una persona concentrada
  */
-var cambiarBombilla: @Composable (Int) -> Painter = {
-    if (it >= 5) painterResource(R.drawable.bombilla_encendida)
-    else painterResource(R.drawable.bombilla_apagada)
+var cambiarFondo: @Composable (Int, Boolean) -> Painter = { ideas, focusMode ->
+    var painter: Painter = if (!focusMode) {
+        if (ideas >= 5) painterResource(R.drawable.bombilla_encendida)
+        else painterResource(R.drawable.bombilla_apagada)
+    } else {
+        painterResource(R.drawable.concentracion)
+    }
+    painter
 }
 
 /**
