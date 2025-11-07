@@ -1,13 +1,23 @@
 <resources>
     <string name="app_name">HeroesDeOro</string>
-    "------------LauncherActivity------------"
+    "------------StartActivity------------"
     <string name="tituloStart">Heroes de oro</string>
     <string name="pedirHeroe">Introduce el nombre del héroe</string>
     <string name="labelHeroe">Nombre del héroe</string>
     <string name="botonParaComenzar">Comenzar aventura</string>
-    "------------LauncherActivity------------"
+    "------------MainActivity------------"
     <string name="saludoHeroe">Bienvenid@ %1$s, vamos a por oro</string>
     <string name="mostrarSalud">Salud -> %d</string>
     <string name="mostrarOro">Oro -> %d</string>
     <string name="modoRiesgo">Modo Riesgo</string>
+    <string name="botonCueva">Explorar Cueva</string>
+    <string name="botonPosada">Descansar en Posada</string>
+    <string name="mensajeMuchoOro">Tienes mucho oro!</string>
+    <string name="botonFinal">Terminar</string>
+    "------------EndGameActivity------------"
+    <string name="despedida">Hasta pronto %s</string>
+    <string name="mensajeSalud">Salud -> %d</string>
+    <string name="mensajeOro">Oro -> %d</string>
+    <string name="botonCompartir">Compartir oro</string>
+    <string name="mensajeCompartir">%1$s tiene %2$d de salud y %3$ de oro</string>
 </resources>

@@ -18,7 +18,13 @@
             android:theme="@style/Theme.HeroesDeOro">
         </activity>
         <activity
-            android:name=".ui.theme.StartActivity"
+            android:name=".EndGameActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.HeroesDeOro">
+        </activity>
+        <activity
+            android:name=".StartActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.HeroesDeOro">

@@ -1,0 +1,76 @@
+package com.example.heroesdeoro
+
+import android.content.Context
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.example.heroesdeoro.ui.theme.HeroesDeOroTheme
+
+class EndGameActivity: ComponentActivity() {
+    @OptIn(ExperimentalMaterial3Api::class)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
+        setContent {
+            HeroesDeOroTheme {
+                Scaffold(topBar = {
+                    CenterAlignedTopAppBar(title = { Text(stringResource(R.string.despedida)
+                        .format(intent.getStringExtra("HEROE_KEY")),
+                        fontSize = 18.sp, color = colorResource(R.color.marron)
+                    ) })
+                }) { innerPadding ->
+                    Box(modifier = Modifier.fillMaxSize().padding(innerPadding)) {
+                        Image(modifier = Modifier.fillMaxSize(),
+                            contentScale = ContentScale.Crop,
+                            contentDescription = "Entrada de taberna",
+                            painter = painterResource(R.drawable.taberna_oro)
+                        )
+                        Box(modifier = Modifier.align(Alignment.Center)
+                            .background(color = colorResource(R.color.marron)),
+                            contentAlignment = Alignment.Center) {
+                            Column(horizontalAlignment = Alignment.CenterHorizontally,
+                                verticalArrangement = Arrangement.SpaceEvenly) {
+                                Text(stringResource(R.string.mensajeSalud)
+                                    .format(intent.getStringExtra("SALUD_KEY")),
+                                    fontSize = 22.sp, color = colorResource(R.color.atardecer))
+                                Text(stringResource(R.string.mensajeOro)
+                                    .format(intent.getStringExtra("ORO_KEY")),
+                                    fontSize = 22.sp, color = colorResource(R.color.atardecer))
+                            }
+                        }
+                        Button(onClick = {}, modifier = Modifier.align(Alignment.BottomCenter),
+                            colors = ButtonDefaults
+                                .buttonColors(containerColor = colorResource(R.color.marron),
+                                    contentColor = colorResource(R.color.atardecer)),) {
+                            Text(stringResource(R.string.botonCompartir))
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+var compartir: (Context)

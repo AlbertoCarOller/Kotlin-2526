@@ -156,7 +156,7 @@ class MainActivity : ComponentActivity() {
                             botonAccion(
                                 stringResource(R.string.botonEnd),
                                 {
-                                    goToEndActivity(context, energia, ideas)
+                                    goToEndActivity(context, energia, ideas, intent.getStringExtra("NAME_KEY") ?: "Invitado")
                                 })
                         }
                     }
@@ -238,12 +238,12 @@ var mensaje: @Composable (Boolean, String, Modifier) -> Unit = { cumple, mensaje
     )
 }
 
-var goToEndActivity: (Context, Int, Int) -> Unit = {
-    context ,energia, ideas ->
+var goToEndActivity: (Context, Int, Int, String) -> Unit = {
+    context ,energia, ideas, nombre ->
     var intent = Intent(context, EndActivity::class.java)
     // Añadimos los extras
     intent.putExtra("ENERGIA_KEY", energia)
     intent.putExtra("IDEAS_KEY", ideas)
-    intent.putExtra("NAME_KEY", intent.getStringExtra("NAME_KEY"))
+    intent.putExtra("NAME_KEY", nombre)
     context.startActivity(intent)
 }

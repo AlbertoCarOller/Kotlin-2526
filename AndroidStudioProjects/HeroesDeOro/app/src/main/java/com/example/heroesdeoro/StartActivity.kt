@@ -1,4 +1,4 @@
-package com.example.heroesdeoro.ui.theme
+package com.example.heroesdeoro
 
 import android.content.Context
 import android.content.Intent
@@ -48,7 +48,7 @@ class StartActivity : ComponentActivity() {
         setContent {
             var nombreHeroe by rememberSaveable { mutableStateOf("") }
             val context = LocalContext.current
-            HeroesDeOroTheme {
+            _root_ide_package_.com.example.heroesdeoro.ui.theme.HeroesDeOroTheme {
                 Scaffold(topBar = {
                     CenterAlignedTopAppBar(title = {
                         Text(
@@ -58,7 +58,8 @@ class StartActivity : ComponentActivity() {
                     })
                 }, containerColor = colorResource(R.color.dorado)) { innerPadding ->
                     Box(Modifier.fillMaxSize()) {
-                        Image(modifier = Modifier.fillMaxSize().alpha(0.7f),
+                        Image(
+                            modifier = Modifier.fillMaxSize().alpha(0.7f),
                             painter = painterResource(R.drawable.dorado),
                             contentDescription = "Dorado",
                             contentScale = ContentScale.Crop
@@ -70,18 +71,27 @@ class StartActivity : ComponentActivity() {
                             verticalArrangement = Arrangement.Center,
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            Text(stringResource(R.string.pedirHeroe),
-                                fontWeight = FontWeight.Bold)
+                            Text(
+                                stringResource(R.string.pedirHeroe),
+                                fontWeight = FontWeight.Bold
+                            )
                             TextField(
                                 value = nombreHeroe,
                                 onValueChange = { newName -> nombreHeroe = newName },
                                 label = { Text(stringResource(R.string.labelHeroe)) })
                             Spacer(Modifier.height(20.dp))
-                            Button(onClick = {
-                                if (nombreHeroe.isNotBlank()) goToMainActivity(context, nombreHeroe)
-                                // ButtonDefaults.buttonColors -> Para cambiar los colores de un botón
-                            }, colors = ButtonDefaults.buttonColors(containerColor = colorResource(R.color.dorado),
-                                contentColor = colorResource(R.color.marron))) {
+                            Button(
+                                onClick = {
+                                    if (nombreHeroe.isNotBlank()) goToMainActivity(
+                                        context,
+                                        nombreHeroe
+                                    )
+                                    // ButtonDefaults.buttonColors -> Para cambiar los colores de un botón
+                                }, colors = ButtonDefaults.buttonColors(
+                                    containerColor = colorResource(R.color.dorado),
+                                    contentColor = colorResource(R.color.marron)
+                                )
+                            ) {
                                 Text(stringResource(R.string.botonParaComenzar))
                             }
                         }

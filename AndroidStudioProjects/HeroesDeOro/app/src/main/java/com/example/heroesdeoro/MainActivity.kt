@@ -1,5 +1,7 @@
 package com.example.heroesdeoro
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -15,12 +17,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Switch
-import androidx.compose.material3.SwitchColors
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -33,6 +35,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.modifier.modifierLocalMapOf
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -50,6 +54,8 @@ class MainActivity : ComponentActivity() {
             var salud by rememberSaveable { mutableStateOf(100) }
             var oro by rememberSaveable { mutableStateOf(0) }
             var modoRiesgo by rememberSaveable { mutableStateOf(false) }
+            var colores = cambiarColores(modoRiesgo)
+            val context = LocalContext.current
             HeroesDeOroTheme {
                 Scaffold(
                     modifier = Modifier.fillMaxSize(),
@@ -59,20 +65,48 @@ class MainActivity : ComponentActivity() {
                                 stringResource(R.string.saludoHeroe)
                                     .format(intent.getStringExtra("HEROE_KEY")),
                                 fontSize = 18.sp,
-                                color = cambiarColores(modoRiesgo).second,
+                                color = colores.second,
                                 fontWeight = FontWeight.ExtraBold
                             )
                         })
                     }) { innerPadding ->
-                    Box(modifier = Modifier
-                        .fillMaxSize()
-                        .padding(innerPadding)) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(innerPadding)
+                    ) {
                         Image(
                             modifier = Modifier.fillMaxSize(),
                             contentScale = ContentScale.Crop,
                             contentDescription = "Gran Cañón",
                             painter = cambiarFondo(modoRiesgo)
                         )
+                        Row(
+                            modifier = Modifier.align(Alignment.TopCenter),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.SpaceEvenly
+                        ) {
+                            boton(
+                                stringResource(R.string.botonCueva),
+                                colores,
+                                {
+                                    var resultados = accionExplorarCuevas(modoRiesgo, salud, oro)
+                                    salud = resultados.first
+                                    oro = resultados.second
+                                }, salud == 0,
+                                Modifier
+                            )
+                            boton(
+                                stringResource(R.string.botonPosada),
+                                colores,
+                                {
+                                    var resultados = accionDescansarPosada(salud, oro)
+                                    salud = resultados.first
+                                    oro = resultados.second
+                                }, salud == 100 || oro == 0,
+                                Modifier
+                            )
+                        }
                         Column(
                             modifier = Modifier
                                 .padding(10.dp)
@@ -87,8 +121,11 @@ class MainActivity : ComponentActivity() {
                             ) {
                                 Box(
                                     modifier = Modifier
-                                        .background(cambiarColores(modoRiesgo).first)
-                                        .border(width = 3.dp, color = cambiarColores(modoRiesgo).second)
+                                        .background(colores.first)
+                                        .border(
+                                            width = 3.dp,
+                                            color = colores.second
+                                        )
                                         .fillMaxWidth(0.4f)
                                         .height(70.dp),
                                     contentAlignment = Alignment.Center
@@ -126,16 +163,24 @@ class MainActivity : ComponentActivity() {
                                             onCheckedChange = { modoRiesgo = it },
                                             colors = SwitchDefaults
                                                 .colors(
-                                                    checkedThumbColor = cambiarColores(modoRiesgo).first,
-                                                    checkedTrackColor = cambiarColores(modoRiesgo).second,
-                                                    uncheckedThumbColor = cambiarColores(modoRiesgo).first,
-                                                    uncheckedTrackColor = cambiarColores(modoRiesgo).second
+                                                    checkedThumbColor = colores.first,
+                                                    checkedTrackColor = colores.second,
+                                                    uncheckedThumbColor = colores.first,
+                                                    uncheckedTrackColor = colores.second
                                                 )
                                         )
                                     }
                                 }
                             }
                         }
+                        boton(
+                            stringResource(R.string.botonFinal),
+                            colores,
+                            { goToEndActivity(context, salud, oro,
+                                intent.getStringExtra("HEROE_KEY") ?: "Invitado") },
+                            false,
+                            Modifier.align(Alignment.BottomCenter)
+                        )
                     }
                 }
             }
@@ -143,12 +188,82 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+/**
+ * Esta función va a cambiar el fondo de pantalla dependiendo
+ * de si está el modo riesgo activado o no
+ */
 var cambiarFondo: @Composable (Boolean) -> Painter = { riesgo ->
     if (!riesgo) painterResource(R.drawable.gran_canon)
     else painterResource(R.drawable.gran_cano_noche)
 }
 
+/**
+ * Esta función va a cambiar los colores de algunos elementos
+ * dependiendo de
+ */
 var cambiarColores: @Composable (Boolean) -> Pair<Color, Color> = { riesgo ->
-    if (!riesgo) Pair(colorResource(R.color.dorado), colorResource(R.color.marron))
+    if (!riesgo) Pair(colorResource(R.color.atardecer), colorResource(R.color.marron))
     else Pair(colorResource(R.color.anochecer), colorResource(R.color.anochecer2))
+}
+
+/**
+ * Este "Widget" va a representar un botón personalizado
+ */
+var boton: @Composable (String, Pair<Color, Color>, () -> Unit, Boolean, Modifier) -> Unit =
+    { texto, colores, accion, disponible, modifier ->
+        Button(
+            modifier = modifier,
+            colors = ButtonDefaults.buttonColors(
+                containerColor = colores.first,
+                contentColor = colores.second
+            ), onClick = accion,
+            enabled = !disponible
+        ) {
+            Text(text = texto)
+        }
+    }
+
+/**
+ * Esta función va a calcular al explorar las cuevas dependiendo de si estamos
+ * en modo riesgo o no el oro y salud, la salud se va restando, el oro se va ganando
+ */
+var accionExplorarCuevas: (Boolean, Int, Int) -> Pair<Int, Int> = { modoRiesgo, salud, oro ->
+    var saludP = salud
+    var oroP = oro
+    if (!modoRiesgo) {
+        var restarSalud = (5..10).random()
+        saludP = if (salud >= restarSalud) salud - restarSalud else 0
+        oroP += (10..20).random()
+
+    } else {
+        var restarSalud = (20..30).random()
+        saludP = if (salud >= restarSalud) salud - restarSalud else 0
+        oroP += (40..60).random()
+    }
+    Pair(saludP, oroP)
+}
+
+/**
+ * Esta función va sumar la salud en un número aleatorio y va a ir restando
+ * el oro de 5 en 5
+ */
+var accionDescansarPosada: (Int, Int) -> Pair<Int, Int> = { salud, oro ->
+    var saludP = salud
+    var oroP = oro
+    var sumarVida = (10..20).random()
+    saludP = if ((salud + sumarVida) < 100) salud + sumarVida else 100
+    oroP = if ((oro - 5) > 0) oro - 5 else 0
+    Pair(saludP, oroP)
+}
+
+/**
+ * Esta función lleva a la 'EndGameActivity' llevando a su vez el nombre, salud
+ * y la cantidad de oro obtenido
+ */
+var goToEndActivity: (Context, Int, Int, String) -> Unit = { context, salud, oro, nombre ->
+    var intent = Intent(context, EndGameActivity::class.java)
+    intent.putExtra("HEROE_KEY", nombre)
+    intent.putExtra("SALUD_KEY", salud)
+    intent.putExtra("ORO_KEY", oro)
+    context.startActivity(intent)
 }
