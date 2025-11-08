@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">SandwichBuilder</string>
+    "-----------------LaucherActivity-----------------"
+    <string name="launcherTitulo">Constructor de Sándwich</string>
+    <string name="labelNombre">Introduce tu nombre</string>
+    <string name="botonComenzar">Empezar Pedido</string>
+    "-----------------BuilderActivity-----------------"
+    <string name="tituloBuilder">Pedido de %s</string>
+    <string name="nombreLechuga">Lechuga</string>
+    <string name="nombreQueso">Queso</string>
+    <string name="nombreBacon">Bacon</string>
+    <string name="botonCompartir">Compartir pedido</string>
+    <string name="mensajeCompartir">%1$s ha pedido %2$d de lechuga, %3$d de queso y %4$d de bacon</string>
+</resources>
