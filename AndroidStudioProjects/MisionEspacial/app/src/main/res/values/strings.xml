@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">MisionEspacial</string>
+    "---------------LauncherActivity---------------"
+    <string name="tituloLauncher">Control de misiones</string>
+    <string name="botonEmpezar">Comenzar misión</string>
+    <string name="labelLaucher">Nombre de Astronauta</string>
+    "---------------MissionControlActivity---------------"
+    <string name="tituloMissionControl">Misión de: %s</string>
+    <string name="mostrarCombustible">COM: %d</string>
+    <string name="mostrarEscudos">ESC: %d</string>
+    <string name="botonAcelerar">Acelerar</string>
+    <string name="botonRecargarEscudo">Recargar Escudo</string>
+    <string name="botonEnviarInforme">Enviar Informe</string>
+    <string name="botonRepostar">Repostar</string>
+    <string name="mensajeCompartir">%1$s tiene un combustible de %2$d y un escudo de %3$d</string>
+</resources>
