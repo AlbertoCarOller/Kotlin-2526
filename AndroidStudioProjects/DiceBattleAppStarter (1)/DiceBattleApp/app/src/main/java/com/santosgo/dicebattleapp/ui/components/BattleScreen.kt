@@ -47,7 +47,10 @@ fun BattleScreen(modifier: Modifier = Modifier, onClickEndGame: (String, String)
         player2HasThrowed = false
         // Se comprueba que ya hayan pasado las 3 rondas
         if (total1 + total2 == 3) {
-            onClickEndGame(if (total1 > total2) player1 else player2, if (total1 > total2) player2 else player1)
+            onClickEndGame(
+                if (total1 > total2) player1 else player2,
+                if (total1 > total2) player2 else player1
+            )
         }
     }
 
@@ -90,24 +93,36 @@ fun BattleScreen(modifier: Modifier = Modifier, onClickEndGame: (String, String)
         modifier = Modifier.fillMaxSize(), verticalAlignment = Alignment.CenterVertically
     ) { // TODO: terminar y arreglar el diseño
         PlayerDisplay(
-            playerIndex = 1, playerName = player1, label = "Jugador", onThrowDice = { index ->
+            playerIndex = 1,
+            playerName = player1,
+            label = "Jugador",
+            onThrowDice = { index ->
                 onThrowDice(index)
                 // Cambiamos el estado de la varible para saber que ha lanzado
                 player1HasThrowed = true
             },
-            enabled = player1.isNotBlank(), onPlayerNameChange = { newInt, newString ->
+            enabled = player1.isNotBlank() && !player1HasThrowed,
+            onPlayerNameChange = { newInt, newString ->
                 onPlayerNameChange(newInt, newString)
-            }, diceNum = num1, wins = total1,
+            },
+            diceNum = num1,
+            wins = total1,
             modifier = modifier
         )
         VerticalDivider()
         PlayerDisplay(
-            playerIndex = 2, playerName = player2, label = "Jugador", onThrowDice = { index ->
+            playerIndex = 2,
+            playerName = player2,
+            label = "Jugador",
+            onThrowDice = { index ->
                 onThrowDice(index)
             },
-            enabled = player2.isNotBlank(), onPlayerNameChange = { index, newString ->
+            enabled = player2.isNotBlank() && !player2HasThrowed,
+            onPlayerNameChange = { index, newString ->
                 onPlayerNameChange(index, newString)
-            }, diceNum = num2, wins = total2,
+            },
+            diceNum = num2,
+            wins = total2,
             modifier = modifier
         )
     }
