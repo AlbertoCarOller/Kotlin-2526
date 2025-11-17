@@ -46,12 +46,8 @@ fun BattleScreen(modifier: Modifier = Modifier, onClickEndGame: (String, String)
         player1HasThrowed = false
         player2HasThrowed = false
         // Se comprueba que ya hayan pasado las 3 rondas
-        if (total1 + total2 == 3) {
-            onClickEndGame(
-                if (total1 > total2) player1 else player2,
-                if (total1 > total2) player2 else player1
-            )
-        }
+                if(total1 == 3) onClickEndGame(player1, player2)
+                if (total2 == 3) onClickEndGame(player2, player1)
     }
 
     /**
