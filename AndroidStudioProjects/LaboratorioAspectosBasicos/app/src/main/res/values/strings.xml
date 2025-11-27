@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">LaboratorioAspectosBasicos</string>
+    <string name="botonMostrarMas">Mostrar más</string>
+    <string name="botonMostrarMenos">Mostrar menos</string>
+    <string name="contenido">Contenido de la colum</string>
+</resources>
