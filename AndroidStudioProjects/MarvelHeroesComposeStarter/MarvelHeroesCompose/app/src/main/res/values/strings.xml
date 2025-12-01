@@ -2,8 +2,15 @@
     <string name="app_name">MarvelHeroesCompose</string>
     <string name="default_content_descrip">Imagen sin descripcion.</string>
     <string name="titulo_app">List of heroes</string>
-    <string name="nombrePoder">Poder:</string>
-    <string name="nombreInteligencia">Inteligencia:</string>
+    <string name="nombrePoder">Poder</string>
+    <string name="nombreInteligencia">Inteligencia</string>
     <string name="titulo_app_medio_grande">Pantalla media o grande</string>
-    <string name="descripcion">Descripción:</string>
+    <string name="descripcion">Descripción</string>
+    <string name="descripcionLoginImagen">Logo marvel heroes</string>
+    <string name="textFieldLabel">Profile</string>
+    <string name="botonLogin">Login</string>
+    <string name="botonLogout">Logout</string>
+    <string name="tituloFav">Lista de favoritos</string>
+    <string name="botonAtras">Atrás</string>
+    <string name="noEncontrado">No encontrado</string>
 </resources>
