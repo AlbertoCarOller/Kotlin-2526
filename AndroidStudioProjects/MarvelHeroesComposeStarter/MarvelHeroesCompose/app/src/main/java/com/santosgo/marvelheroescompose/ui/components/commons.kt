@@ -227,12 +227,18 @@ fun ProfileScreen(modifier: Modifier = Modifier, navigateToHeroes: () -> Unit) {
  * tamaño de la pantalla (WindowWidthSizeClass)
  */
 @Composable
-fun HeroesScreen(modifier: Modifier, widowSize: WindowWidthSizeClass) {
+fun HeroesScreen(
+    modifier: Modifier,
+    widowSize: WindowWidthSizeClass,
+    goToDetails: (String) -> Unit
+) {
     when (widowSize) {
         // Si el tamaño es compacto, elegimos ese composable
         WindowWidthSizeClass.Compact -> HeroListScreenCompact(
             heroes = Datasource.getListXtimes(10),
-            modifier = modifier
+            modifier = modifier,
+            // Subimos el valor del héroe, esto nos servirá para viajar a la pantalla detalles
+            subirNombre = { nombre -> goToDetails(nombre) }
         )
 
         else -> HeroListScreenExp(
@@ -277,11 +283,18 @@ fun NavigatorContent(modifier: Modifier = Modifier, windowSize: WindowWidthSizeC
         }
         // Definimos la ruta de 'heroes' para mostrar la lista de héroes
         composable("heroes") {
-            HeroesScreen(modifier, windowSize)
+            HeroesScreen(modifier, windowSize) { nombreHeroe ->
+                navController.navigate("detailsHeroe/$nombreHeroe")
+            }
         }
         // Definimos la ruta de 'favHeroes' para mostrar la lista de héroes favoritos
         composable("favHeroes") {
             HeroScreenFav(modifier, windowSize)
+        }
+        // Definimos la ruta de 'detailsHeroe' pasándole el nombre del héroe
+        composable("detailsHeroe/{heroeName}") { backStackEntry ->
+            val nombreHeroe = backStackEntry.arguments?.getString("heroeName") ?: ""
+            HeroDetailCompactScreen(nombreHeroe, modifier) { navController.popBackStack() }
         }
     }
 }
@@ -291,7 +304,7 @@ fun NavigatorContent(modifier: Modifier = Modifier, windowSize: WindowWidthSizeC
  * en caso de que exista, se muestra como una información detallada de este
  */
 @Composable
-fun HeroDetailCompactScreen(hero_name: String, modifier: Modifier = Modifier) {
+fun HeroDetailCompactScreen(hero_name: String, modifier: Modifier = Modifier, goBack: () -> Unit) {
     // El héroe buscado por su nombre (hero_name)
     val hero = Datasource.getHeroByName(hero_name)
     Column(
@@ -312,11 +325,13 @@ fun HeroDetailCompactScreen(hero_name: String, modifier: Modifier = Modifier) {
                     .widthIn(200.dp, 300.dp) // Esta propiedad establece el ancho mínimo y máximo
                     .fillMaxWidth(), // Ocupará los 300 píxeles
             )
+            // Después de la imagen se muestra el nombre del héroe
             Spacer(modifier = Modifier.height(16.dp))
             StandardTextComp(
                 text = hero.name,
                 style = MaterialTheme.typography.headlineMedium
             )
+            // Posteriormente en una fila se muestra su poder e inteligencia
             Spacer(modifier = Modifier.height(8.dp))
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -325,23 +340,25 @@ fun HeroDetailCompactScreen(hero_name: String, modifier: Modifier = Modifier) {
                 StandardTextComp(text = "${stringResource(R.string.nombrePoder)}: ${hero.power}")
                 StandardTextComp(text = "${stringResource(R.string.nombreInteligencia)}: ${hero.intelligence}")
             }
+            // Por último se muestra la descripción del héroe
             Spacer(modifier = Modifier.height(16.dp))
             StandardTextComp(
                 text = hero.description,
                 style = MaterialTheme.typography.bodyMedium
             )
+            // En caso de que no se encuentre al héroe se muestra que no se ha encontrado
         } ?: StandardTextComp(
             stringResource(R.string.noEncontrado),
             style = MaterialTheme.typography.headlineMedium
         )
-
+        // Se encuentre o no al héroe se mostrará el botón para volver atrás
         Spacer(modifier = Modifier.height(32.dp))
-        StandardButtonComp(label = stringResource(R.string.botonAtras), onClick = { })
+        StandardButtonComp(label = stringResource(R.string.botonAtras), onClick = { goBack() })
     }
 }
 
 @Preview
 @Composable
 fun HeroDetailCompactScreenPreview() {
-    HeroDetailCompactScreen("Hulk")
+    HeroDetailCompactScreen("Hulk", goBack = {})
 }

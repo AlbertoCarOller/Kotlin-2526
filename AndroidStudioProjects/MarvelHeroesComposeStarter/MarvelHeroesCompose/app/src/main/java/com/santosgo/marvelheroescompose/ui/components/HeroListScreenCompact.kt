@@ -14,7 +14,8 @@ import com.santosgo.marvelheroescompose.model.Hero
 @Composable
 fun HeroListScreenCompact(
     heroes: MutableList<Hero>,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    subirNombre: (String) -> Unit
 ) {
     Column(modifier = modifier.fillMaxSize()) {
         MedHeaderComp(stringResource(R.string.titulo_app))
@@ -22,7 +23,8 @@ fun HeroListScreenCompact(
             modifier = Modifier.fillMaxWidth()
         ) {
             items(items = heroes) {
-                CardHero(it)
+                // Subimos el valor del nombre del héroe hacia arriba
+                CardHero(it, goToDetails = { newValue -> subirNombre(newValue) })
             }
         }
     }

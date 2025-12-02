@@ -34,7 +34,7 @@ import com.santosgo.marvelheroescompose.ui.theme.extendedColors
  * Este composable es una card con información básica de los héroes
  */
 @Composable
-fun CardHero(hero: Hero, modifier: Modifier = Modifier) {
+fun CardHero(hero: Hero, modifier: Modifier = Modifier, goToDetails: (String) -> Unit) {
     // Creamos una card que ocupe todo el ancho, pero con un margin en este caso de 8.dp
     Card(
         modifier = modifier
@@ -76,7 +76,7 @@ fun CardHero(hero: Hero, modifier: Modifier = Modifier) {
                         tint = colorResource(R.color.red),
                     )
                 }
-                IconButton(onClick = {}) {
+                IconButton(onClick = { goToDetails(hero.name) }) {
                     Icon(
                         Icons.Filled.KeyboardArrowDown,
                         contentDescription = "Icono flecha abajo", Modifier.size(40.dp),
