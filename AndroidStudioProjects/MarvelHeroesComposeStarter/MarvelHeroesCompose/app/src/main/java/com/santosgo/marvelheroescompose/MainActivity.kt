@@ -10,6 +10,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.rememberNavController
+import com.santosgo.marvelheroescompose.ui.components.ButtonNavigatorBar
 import com.santosgo.marvelheroescompose.ui.components.StandardTextComp
 import com.santosgo.marvelheroescompose.ui.theme.MarvelHeroesComposeTheme
 import com.santosgo.marvelheroescompose.ui.components.NavigatorContent
@@ -19,17 +21,22 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-
         setContent {
+            // Creamos un navController
+            val navController = rememberNavController()
             // Obtenemos el objeto que nos va a devolver el ancho de la Activity actual
             val widowSize = getWindowSizeClass(this)
             MarvelHeroesComposeTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                Scaffold(
+                    modifier = Modifier.fillMaxSize(),
+                    // Le pasamos al Scaffold el bottomBar que necesitamos para navegar
+                    bottomBar = { ButtonNavigatorBar(navController) }) { innerPadding ->
                     NavigatorContent(
                         modifier = Modifier
                             .fillMaxSize()
                             .padding(innerPadding),
-                        windowSize = widowSize
+                        windowSize = widowSize,
+                        navController = navController
                     )
                 }
             }

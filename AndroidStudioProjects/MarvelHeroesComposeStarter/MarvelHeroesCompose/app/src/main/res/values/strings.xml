@@ -13,4 +13,7 @@
     <string name="tituloFav">Lista de favoritos</string>
     <string name="botonAtras">Atrás</string>
     <string name="noEncontrado">No encontrado</string>
+    <string name="bottonProfiles">Perfil</string>
+    <string name="bottonFav">Favoritos</string>
+    <string name="bottonHeroes">Héroes</string>
 </resources>
