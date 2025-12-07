@@ -16,75 +16,105 @@
 
 package com.santosgo.marvelheroescompose.model
 
+import androidx.compose.runtime.mutableStateListOf
 import com.santosgo.marvelheroescompose.R
 
 object Datasource {
 
-    val heroList : () -> MutableList<Hero> = {
+    val heroList: () -> MutableList<Hero> = {
         mutableListOf<Hero>(
-            Hero("Capitán América",
-            10,
-            4,
-            "capitan_america",
-            "Líder militar experto y un gran estratega. Su escudo de Vibranium es prácticamente indestructible."),
-            Hero("Iron Man",
+            Hero(
+                "Capitán América",
+                10,
+                4,
+                "capitan_america",
+                "Líder militar experto y un gran estratega. Su escudo de Vibranium es prácticamente indestructible."
+            ),
+            Hero(
+                "Iron Man",
                 6,
                 8,
                 "iron_man",
                 "Vengador blindado. Tony Stark es un genio que diseá soluciones de alta tecnología, como su armadura."
             ),
-            Hero("Hulk",
+            Hero(
+                "Hulk",
                 9,
                 7,
                 "hulk",
                 "Prefiere utilizar su inmenso poder para aplastar a las fuerzas del mal. ¡Es uno de los superhéroes más fuertes!"
             ),
-            Hero("Viuda negra",
+            Hero(
+                "Viuda negra",
                 5,
                 5,
                 "viuda_negra",
                 "Superespía y una experta en artes marciales. Tiene una agilidad y una capacidad atlética excepcionales."
             ),
-            Hero("Thor",
+            Hero(
+                "Thor",
                 9,
                 3,
                 "thor",
                 "¡Dios del Trueno! Controla el trueno y utiliza su martillo Mjolnir para proteger su hogar, Asgardia, y la Tierra."
             ),
-            Hero("Capitana Marvel",
+            Hero(
+                "Capitana Marvel",
                 10,
                 4,
                 "capitana_marvel",
                 "Una de la superheroínas más poderosas. Puede volar y lanza ráfagas de energía de sus manos."
             ),
-            Hero("Spiderman",
+            Hero(
+                "Spiderman",
                 6,
                 6,
                 "spiderman",
                 "Tu vecino y amigo siempre está atento para protegerte. Es un chico muy pegajoso."
             ),
-            Hero("Star Lord",
+            Hero(
+                "Star Lord",
                 4,
                 7,
                 "star_lord",
                 "Viaja por el cosmos en su nave espacial, la Milano, en busca de fortuna. Es el líder de los Guardianes de la Galaxia."
             ),
-            Hero("Gamora",
+            Hero(
+                "Gamora",
                 6,
                 4,
                 "gamora",
                 "Es una espadachina hábil y una guerrera famosa. Hija del villano Titán Thanos, aunque tiene su corazoncito."
             ),
-            Hero("Doctor Strange",
-            3,
-            8,
-            "doctor_strange",
-            "Desarrolló sus poderes mediante antiguas técnicas asiáticas. Utiliza ilusiones, hechizos y engaños. ¡Puede abrir portales multidimensionales!"
+            Hero(
+                "Doctor Strange",
+                3,
+                8,
+                "doctor_strange",
+                "Desarrolló sus poderes mediante antiguas técnicas asiáticas. Utiliza ilusiones, hechizos y engaños. ¡Puede abrir portales multidimensionales!"
             )
         ).apply { shuffle() }
     }
 
-    val getListXtimes : (Int) -> MutableList<Hero> = { times ->
+    // Creamos una lista vacía (al principio) de héroes favoritos, esta lista es chivata (State)
+    val heroesListFav = mutableStateListOf<Hero>()
+
+    // Creamos una fución para añadir un héroe que no esté ya añadido a favoritos
+    val addHeroe: (Hero) -> Unit = { hero ->
+        if (!heroesListFav.contains(hero)) {
+            heroesListFav.add(hero)
+        }
+    }
+
+    // Creamos una función para eliminar un héroe de favoritos solo con el nombre
+    val deleteHeroByName: (String) -> Unit = { nombreHero ->
+        // Obtenemos el héroe por el nombre
+        var heroToDelete = heroesListFav.firstOrNull { it.name == nombreHero }
+        // Eliminamos el héroe de la lista de favoritos
+        heroesListFav.remove(heroToDelete)
+    }
+
+    val getListXtimes: (Int) -> MutableList<Hero> = { times ->
         val list = mutableListOf<Hero>()
         for (i in 1..times) {
             list.addAll(heroList())
@@ -93,13 +123,13 @@ object Datasource {
         list
     }
 
-    val getHeroByName : (String) -> Hero? = { name ->
+    val getHeroByName: (String) -> Hero? = { name ->
         heroList().find { it.name == name }
     }
 
-    val getSomeRandHeroes : (Int) -> MutableList<Hero> = { num ->
+    val getSomeRandHeroes: (Int) -> MutableList<Hero> = { num ->
         val heroes = heroList()
-        if(num <= heroes.size) heroes.subList(0, num)
+        if (num <= heroes.size) heroes.subList(0, num)
         heroes
     }
 

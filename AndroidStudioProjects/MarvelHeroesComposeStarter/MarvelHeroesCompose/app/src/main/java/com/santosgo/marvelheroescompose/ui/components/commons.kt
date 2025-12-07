@@ -18,6 +18,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.Icon
@@ -47,7 +48,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
 import com.santosgo.marvelheroescompose.R
 import com.santosgo.marvelheroescompose.model.Hero
 import com.santosgo.marvelheroescompose.ui.theme.extendedColors
@@ -315,17 +315,26 @@ fun HeroesScreen(
  * con el formato correspondido dependiendo del tamaño de la pantalla
  */
 @Composable
-fun HeroScreenFav(modifier: Modifier, widowSize: WindowWidthSizeClass) {
+fun HeroScreenFav(
+    modifier: Modifier,
+    widowSize: WindowWidthSizeClass,
+    subirNombre: (String) -> Unit
+) {
+    // El número de héroes favoritos, cuando cambie esto, habrá una reconstrucción
+    var showDialog by rememberSaveable { mutableStateOf(false) }
+    var nombreHero by rememberSaveable { mutableStateOf("") }
     when (widowSize) {
         WindowWidthSizeClass.Compact -> HeroListFavCompact(
-            Datasource.getSomeRandHeroes(4),
-            modifier = modifier
-        )
+            modifier = modifier, subirHeroe = { nombreHero = it.name; showDialog = true }
+        ) { subirNombre(it.name) }
 
         else -> HeroListFavExpand(
-            Datasource.getSomeRandHeroes(4),
             modifier = modifier
         )
+    }
+    // Si ShowDialog es true se muestra la ventana emergente
+    if (showDialog) {
+        DialogPersonalizado(nombreHero) { showDialog = it }
     }
 }
 
@@ -375,7 +384,7 @@ fun NavigatorContent(
         }
         // Definimos la ruta de 'favHeroes' para mostrar la lista de héroes favoritos
         composable("favHeroes") {
-            HeroScreenFav(modifier, windowSize)
+            HeroScreenFav(modifier, windowSize) { navController.navigate("detailsHeroe/$it") }
         }
         // Definimos la ruta de 'detailsHeroe' pasándole el nombre del héroe
         composable("detailsHeroe/{heroeName}") { backStackEntry ->
@@ -535,4 +544,39 @@ fun ButtonNavigatorBar(navController: NavController) {
             )
         }
     }
+}
+
+/**
+ * Esta función va a mostrar una ventana emergente (AlertDialog) para
+ * confirmar el borrado de un héroe
+ */
+@Composable
+fun DialogPersonalizado(nameHero: String, subirValor: (Boolean) -> Unit) {
+    // No puede tener cuerpo ({})
+    AlertDialog(
+        confirmButton = {
+            // Eliminamos el héroe de la lista de favoritos y subimos el valor para cerrar el Dialog
+            Button(onClick = { Datasource.deleteHeroByName(nameHero); subirValor(false) }) {
+                Text("Confirmar")
+            }
+        },
+        // Subimos false, para dejar de mostrar el dialog, si apretamos fuera del Dialog
+        onDismissRequest = {
+            subirValor(false)
+        },
+        // Botón de volver atrás, es decir no se borra y cerramos el dialog
+        dismissButton = {
+            Button(onClick = { subirValor(false) }) {
+                Text("Atrás")
+            }
+        },
+        // Título del dialog
+        title = {
+            Text("Aviso")
+        },
+        // Texto del dialog, contenido del texto, debajo de 'title'
+        text = {
+            Text("¿Seguro que quieres eliminar a $nameHero?")
+        }
+    )
 }

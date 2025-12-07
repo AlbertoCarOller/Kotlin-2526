@@ -8,7 +8,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import com.santosgo.marvelheroescompose.R
 import com.santosgo.marvelheroescompose.model.Datasource
 import com.santosgo.marvelheroescompose.model.Hero
@@ -18,22 +17,17 @@ import com.santosgo.marvelheroescompose.model.Hero
  */
 @Composable
 fun HeroListFavCompact(
-    heroes: MutableList<Hero>,
-    modifier: Modifier = Modifier
+    //heroes: MutableList<Hero>,
+    modifier: Modifier = Modifier,
+    subirHeroe: (Hero) -> Unit,
+    goToDeatails: (Hero) -> Unit
 ) {
     Column(modifier = modifier.fillMaxSize()) {
         MedHeaderComp(stringResource(R.string.tituloFav))
         LazyColumn(modifier = Modifier.fillMaxWidth()) {
-            items(items = heroes) {
-                CardHeroFav(it)
+            items(items = Datasource.heroesListFav) {
+                CardHeroFav(it, subirHeroe = subirHeroe, goToDetails = goToDeatails)
             }
         }
     }
-}
-
-// Previw de la lista de cartas favoritas
-@Composable
-@Preview
-fun HeroListFavCompactPreview() {
-    HeroListFavCompact(Datasource.getSomeRandHeroes(4), modifier = Modifier.fillMaxSize())
 }

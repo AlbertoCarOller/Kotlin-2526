@@ -81,7 +81,10 @@ fun CardHero(hero: Hero, modifier: Modifier = Modifier, goToDetails: (String) ->
             }
             // Los IconButton de la flecha y el corazón en una Colum
             Column {
-                IconButton(onClick = {}) {
+                IconButton(onClick = {
+                    // Añadimos el héroe a favoritos
+                    Datasource.addHeroe(hero)
+                }) {
                     Icon(
                         Icons.Filled.FavoriteBorder,
                         contentDescription = "Icono de favorito", Modifier.size(40.dp),
@@ -147,7 +150,12 @@ fun CardHeroLand(hero: Hero, modifier: Modifier = Modifier) {
  * añadido a favoritos, el diseño es casi igual a la card estándar pero con iconos distintos
  */
 @Composable
-fun CardHeroFav(hero: Hero, modifier: Modifier = Modifier) {
+fun CardHeroFav(
+    hero: Hero,
+    modifier: Modifier = Modifier,
+    subirHeroe: (Hero) -> Unit,
+    goToDetails: (Hero) -> Unit
+) {
     // Creamos una card que ocupe todo el ancho, pero con un margin en este caso de 8.dp
     Card(
         modifier = modifier
@@ -182,7 +190,10 @@ fun CardHeroFav(hero: Hero, modifier: Modifier = Modifier) {
             }
             // Los IconButton de la flecha y el corazón en una Colum
             Column {
-                IconButton(onClick = {}) {
+                IconButton(onClick = {
+                    // Subimos el héroe hacia arriba
+                    subirHeroe(hero)
+                }) {
                     Icon(
                         Icons.Filled.Close,
                         contentDescription = "Icono de eliminar",
@@ -191,7 +202,7 @@ fun CardHeroFav(hero: Hero, modifier: Modifier = Modifier) {
                         tint = colorResource(R.color.red)
                     )
                 }
-                IconButton(onClick = {}) {
+                IconButton(onClick = { goToDetails(hero) }) {
                     Icon(
                         Icons.Filled.KeyboardArrowDown,
                         contentDescription = "Icono flecha abajo",
@@ -203,13 +214,6 @@ fun CardHeroFav(hero: Hero, modifier: Modifier = Modifier) {
             }
         }
     }
-}
-
-// Preview de las cartas favoritas ya que por el momento no las puedo ver, porque no las estoy implementando
-@Composable
-@Preview
-fun CardHeroFavPreview() {
-    Datasource.getHeroByName("Iron Man")?.let { CardHeroFav(it) }
 }
 
 /**
@@ -249,13 +253,6 @@ fun CardHeroFavLand(hero: Hero, modifier: Modifier = Modifier) {
                     )
                 }
                 LabelAndValueComp(stringResource(R.string.descripcion), value = hero.description)
-            }
-            IconButton(onClick = {}) {
-                Icon(
-                    Icons.Filled.FavoriteBorder,
-                    contentDescription = "Icono de favorito", Modifier.size(40.dp),
-                    tint = colorResource(R.color.red),
-                )
             }
         }
     }
