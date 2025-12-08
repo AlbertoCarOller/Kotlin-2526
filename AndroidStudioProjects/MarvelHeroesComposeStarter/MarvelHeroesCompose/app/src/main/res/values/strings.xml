@@ -1,19 +1,23 @@
 <resources>
     <string name="app_name">MarvelHeroesCompose</string>
     <string name="default_content_descrip">Imagen sin descripcion.</string>
-    <string name="titulo_app">List of heroes</string>
+    <string name="titulo_app">Lista de héroes</string>
     <string name="nombrePoder">Poder</string>
     <string name="nombreInteligencia">Inteligencia</string>
     <string name="titulo_app_medio_grande">Pantalla media o grande</string>
     <string name="descripcion">Descripción</string>
     <string name="descripcionLoginImagen">Logo marvel heroes</string>
-    <string name="textFieldLabel">Profile</string>
-    <string name="botonLogin">Login</string>
-    <string name="botonLogout">Logout</string>
+    <string name="textFieldLabel">Perfil</string>
+    <string name="botonLogin">Iniciar sesión</string>
+    <string name="botonLogout">Cerrar sesión</string>
     <string name="tituloFav">Lista de favoritos</string>
     <string name="botonAtras">Atrás</string>
     <string name="noEncontrado">No encontrado</string>
     <string name="bottonProfiles">Perfil</string>
     <string name="bottonFav">Favoritos</string>
     <string name="bottonHeroes">Héroes</string>
+    <string name="dialogConfirmar">Confirmar</string>
+    <string name="dialogAtras">Atrás</string>
+    <string name="dialogAviso">Aviso</string>
+    <string name="dialogMensaje">¿Seguro que quieres eliminar a %s?</string>
 </resources>

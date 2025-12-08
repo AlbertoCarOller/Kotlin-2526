@@ -557,7 +557,7 @@ fun DialogPersonalizado(nameHero: String, subirValor: (Boolean) -> Unit) {
         confirmButton = {
             // Eliminamos el héroe de la lista de favoritos y subimos el valor para cerrar el Dialog
             Button(onClick = { Datasource.deleteHeroByName(nameHero); subirValor(false) }) {
-                Text("Confirmar")
+                Text(stringResource(R.string.dialogConfirmar))
             }
         },
         // Subimos false, para dejar de mostrar el dialog, si apretamos fuera del Dialog
@@ -567,16 +567,16 @@ fun DialogPersonalizado(nameHero: String, subirValor: (Boolean) -> Unit) {
         // Botón de volver atrás, es decir no se borra y cerramos el dialog
         dismissButton = {
             Button(onClick = { subirValor(false) }) {
-                Text("Atrás")
+                Text(stringResource(R.string.dialogAtras))
             }
         },
         // Título del dialog
         title = {
-            Text("Aviso")
+            Text(stringResource(R.string.dialogAviso))
         },
         // Texto del dialog, contenido del texto, debajo de 'title'
         text = {
-            Text("¿Seguro que quieres eliminar a $nameHero?")
+            Text(stringResource(R.string.dialogMensaje).format(nameHero))
         }
     )
 }

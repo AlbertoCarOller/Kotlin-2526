@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MarvelHeroesCompose</string>
+    <string name="default_content_descrip">Image without</string>
+    <string name="titulo_app">List of Heroes</string>
+    <string name="nombrePoder">Power</string>
+    <string name="nombreInteligencia">Intelligence</string>
+    <string name="titulo_app_medio_grande">Medium or Large screen</string>
+    <string name="descripcion">Description</string>
+    <string name="descripcionLoginImagen">Marvel heroes logo</string>
+    <string name="textFieldLabel">Profile</string>
+    <string name="botonLogin">Login</string>
+    <string name="botonLogout">Logout</string>
+    <string name="tituloFav">List of favorites</string>
+    <string name="botonAtras">Back</string>
+    <string name="noEncontrado">Not found</string>
+    <string name="bottonProfiles">Profile</string>
+    <string name="bottonFav">Favourites</string>
+    <string name="bottonHeroes">Heroes</string>
+    <string name="dialogConfirmar">Confirm</string>
+    <string name="dialogAtras">Back</string>
+    <string name="dialogAviso">Notice</string>
+    <string name="dialogMensaje">Are you sure you want to delete %s?</string>
+</resources>
