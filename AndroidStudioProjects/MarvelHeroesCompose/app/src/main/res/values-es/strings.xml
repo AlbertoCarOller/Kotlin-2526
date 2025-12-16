@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MarvelHeroesCompose</string>
+    <string name="default_content_descrip">Imagen sin descripcion.</string>
+    <string name="marvel_hero_list">Lista de Héroes</string>
+    <string name="more_content_desc">Muestra descripción</string>
+    <string name="hero_description">Descripción: %s.</string>
+    <string name="profile_name">Perfil</string>
+    <string name="logout">Salir</string>
+    <string name="login">Acceder</string>
+    <string name="power">Poder: %d.</string>
+    <string name="intelligence">Inteligencia: %d.</string>
+    <string name="delete_desc">Botón de eliminar de favoritos</string>
+    <string name="marvel_fav_list">Lista de favoritos</string>
+    <string name="hero_image_desc">Imagen del héroe %s.</string>
+    <string name="hero_not_found">¡Héroe no encontrado!</string>
+    <string name="back">Volver</string>
+    <string name="delete_hero">Borrar Héroe</string>
+    <string name="delete_hero_confirmation">¿Estás seguro de que deseas eliminar a %s de favoritos?</string>
+    <string name="delete">Eliminar</string>
+    <string name="cancel">Cancelar</string>
+    <string name="select_two_heroes">Selecciona dos héroes</string>
+    <string name="fight">Luchar</string>
+    <string name="fight_title">Batalla de %s!(x2)</string>
+    <string name="technique_name">Técnica: %s.</string>
+    <string name="total_attack">Valor total de ataque: %d.</string>
+    <string name="damage">Daño: %d.</string>
+    <string name="technique_desciption">Acción: %s.</string>
+    <string name="power_battle">Lucha de Poder! (x2)</string>
+    <string name="intelligence_battle">Lucha Inteligente! (x2)</string>
+    <string name="draw_text">¡Es un empate!</string>
+    <string name="back_button">Volver</string>
+    <string name="fight_winner">¡¡El ganador es %s!!</string>
+</resources>

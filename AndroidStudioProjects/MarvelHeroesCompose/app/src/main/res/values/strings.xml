@@ -1,0 +1,33 @@
+<resources>
+    <string name="app_name">MarvelHeroesCompose</string>
+    <string name="default_content_descrip">Image without description.</string>
+    <string name="marvel_hero_list">List of Heroes</string>
+    <string name="more_content_desc">Show description</string>
+    <string name="hero_description">Description: %s.</string>
+    <string name="profile_name">Profile</string>
+    <string name="logout">Logout</string>
+    <string name="login">Login</string>
+    <string name="power">Power: %d.</string>
+    <string name="intelligence">Intelligence: %d.</string>
+    <string name="delete_desc">Button to delete from favorites</string>
+    <string name="marvel_fav_list">List of favorites</string>
+    <string name="hero_image_desc">Image of the hero %s.</string>
+    <string name="hero_not_found">Hero not found!</string>
+    <string name="back">Back</string>
+    <string name="delete_hero">Delete Hero</string>
+    <string name="delete_hero_confirmation">¿Are you sure you want to delete %s from favorites?</string>
+    <string name="delete">Delete</string>
+    <string name="cancel">Cancel</string>
+    <string name="select_two_heroes">Select two heroes</string>
+    <string name="fight">Fight</string>
+    <string name="fight_title">Battle of %s!(x2)</string>
+    <string name="technique_name">Technique: %s.</string>
+    <string name="total_attack">Attack Total: %d.</string>
+    <string name="damage">Damage: %d.</string>
+    <string name="technique_desciption">Action: %s.</string>
+    <string name="power_battle">Power Battle! (x2)</string>
+    <string name="intelligence_battle">Intelligence Battle! (x2)</string>
+    <string name="draw_text">It\'s a Draw!</string>
+    <string name="back_button">Back</string>
+    <string name="fight_winner">¡¡The Winner is %s!!</string>
+</resources>

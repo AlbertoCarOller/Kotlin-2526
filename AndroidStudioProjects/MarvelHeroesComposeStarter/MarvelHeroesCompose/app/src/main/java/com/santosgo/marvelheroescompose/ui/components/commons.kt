@@ -533,7 +533,7 @@ fun ButtonNavigatorBar(navController: NavController) {
                         popUpTo("profile") { saveState = true }
                         // launchSingleTop -> Esto evita que se habra constantemente en la pila una misma pantalla en la que ya estamos
                         launchSingleTop = true
-                        // restoreState -> Va en conjunto con saveState, establece los valores guardados de la pantalla
+                        // restoreState -> Va en conjunto con saveState, restablece los valores guardados de la pantalla
                         restoreState = true
                     }
                 },
