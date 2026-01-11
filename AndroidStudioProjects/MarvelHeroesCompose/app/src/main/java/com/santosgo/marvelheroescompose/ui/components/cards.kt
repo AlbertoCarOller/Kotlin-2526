@@ -32,6 +32,7 @@ import com.santosgo.mavelheroes.data.Datasource
 @Composable
 fun HeroCard(hero: Hero, isSelected: Boolean, onFavClick : () -> Unit, onCardClick: () -> Unit) {
     val extendedColorScheme = LocalExtendedColorScheme.current
+    // El color varia, si está seleccionado cambia de color
     val color =
         if(!isSelected) extendedColorScheme.customCard.color
         else extendedColorScheme.customCard.colorContainer

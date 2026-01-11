@@ -1,6 +1,5 @@
 package com.santosgo.marvelheroescompose.ui.screens
 
-import android.graphics.fonts.FontStyle
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -13,33 +12,25 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.Badge
-import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableDoubleStateOf
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.compose.LocalExtendedColorScheme
 import com.santosgo.marvelheroescompose.R
 import com.santosgo.marvelheroescompose.model.Hero
 import com.santosgo.marvelheroescompose.model.Technique
@@ -50,7 +41,6 @@ import com.santosgo.marvelheroescompose.ui.components.TextWinner
 import com.santosgo.marvelheroescompose.ui.components.badgedIcon
 import com.santosgo.mavelheroes.data.Datasource
 import com.santosgo.mavelheroes.data.FightType
-import kotlinx.coroutines.delay
 
 @Composable
 fun FightScreen(
@@ -59,6 +49,7 @@ fun FightScreen(
     player2Name: String,
     modifier: Modifier = Modifier
 ) {
+    // Obtenemos los objetos héroes a partir del nombre
     val player1 = Datasource.getHeroByName(player1Name)
     val player2 = Datasource.getHeroByName(player2Name)
     val DRAW = "Draw"
@@ -85,6 +76,7 @@ fun FightScreen(
     val onThrowTechnique: (Int) -> Unit = { index ->
         when (index) {
             1 -> {
+                // Se elegi técnica random
                 player1Technique = player1.techniques.random()
                 player1FinalValue = player1Technique?.damage ?: 0
                 player1FinalValue += when (fightType) {
@@ -148,6 +140,7 @@ fun FightScreen(
 
         Spacer(modifier = Modifier.height(8.dp))
 
+        // Dependiendo de quién sea más fuerte pues se cambiará la variable ganador porque será el ganador
         if (player1Technique != null && player2Technique != null && winner == null) {
             when {
                 player1FinalValue > player2FinalValue -> winner = player1.name
@@ -156,13 +149,14 @@ fun FightScreen(
             }
         }
 
+        // En caso de que no haya ganador se mostrará una imagen de VS
         if (winner == null) {
             Image(
                 painter = painterResource(R.drawable.versus),
                 contentDescription = stringResource(R.string.default_content_descrip),
                 alignment = Alignment.Center
             )
-            // En caso de que no haya ganador se mostrará el texto de ganador y el botón para volver
+            // En caso de que haya ganador se mostrará el texto de ganador y el botón para volver
         } else {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 // El texto del ganador o empate
@@ -193,7 +187,7 @@ fun FightScreen(
 @Composable
 fun HeroFightCard(
     hero: Hero,
-    isTop: Boolean,
+    isTop: Boolean, // -> Dependiendo de esto la card de la técnica se muestra arriba o abajo
     techniqueThrown: Technique?,
     finalValue: Int,
     onUseTechnique: () -> Unit

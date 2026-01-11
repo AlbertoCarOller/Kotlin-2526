@@ -33,11 +33,15 @@ fun HeroListCompactScreen(
     navController: NavController,
     modifier: Modifier = Modifier,
 ) {
+    // Guarda los héroes seleccionados
     val selectedHeroes = remember { mutableStateListOf<String>() }
     Column(modifier = modifier.fillMaxSize()) {
         when (selectedHeroes.size) {
+            // Si no hay héroes seleccionados se muestra que seleccione dos héroes
             0 -> MedHeaderComp(title = stringResource(id = R.string.select_two_heroes))
+            // Si hay uno seleccionado, se muestra el nombre
             1 -> MedHeaderComp(title = "${selectedHeroes[0]} VS ")
+            // En caso de que sea 2 se muestran los 2 coches
             else -> {
                 MedHeaderComp(title = "${selectedHeroes[0]} VS ${selectedHeroes[1]}")
                 // El botón para viajar a la fightScreen
@@ -64,8 +68,10 @@ fun HeroListCompactScreen(
                     isSelected,
                     onFavClick = { Log.d("FavHeroCard", "${hero.name} es mi favorito") },
                     onCardClick = {
+                        // Si está selecionado y le damos click se lo quitamos de la lista
                         if (isSelected) {
                             selectedHeroes.remove(hero.name)
+                            // En caso de que clickemos y no esté seleccionado se añade a la lista
                         } else {
                             selectedHeroes.add(hero.name)
                             if (selectedHeroes.size > 2) {
