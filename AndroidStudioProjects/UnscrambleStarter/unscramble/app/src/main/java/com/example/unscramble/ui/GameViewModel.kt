@@ -5,6 +5,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.example.unscramble.data.AllSpanishWords
+import com.example.unscramble.data.MAX_NO_OF_WORDS
+import com.example.unscramble.data.SCORE_INCREASE
+import com.example.unscramble.data.allWords
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -72,7 +75,7 @@ class GameViewModel : ViewModel() {
      */
     private fun pickRandomWordAndShuffle(): String {
         // La función random() devuelve un elemento aleatorio de la lista de elementos
-        currentWord = AllSpanishWords.random()
+        currentWord = allWords.random()
         // Comprobamos que la palabra obtenida sea una palabra que ya haya salido (useWords)
         if (useWords.contains(currentWord)) {
             /* Se hace recursividad de la función, en caso de que no se haya obtenido una palabra nueva,
@@ -81,6 +84,8 @@ class GameViewModel : ViewModel() {
             return pickRandomWordAndShuffle()
             // En caso de que la palabra no se haya usado ya, se desordena
         } else {
+            // Guardamos la palabra en la lista de palabras utilizada
+            useWords.add(currentWord)
             // Devolvemos la palabra desordenada
             return shuffleCurrentWord(currentWord)
         }
@@ -111,7 +116,7 @@ class GameViewModel : ViewModel() {
      * nueva la cual para darle valor a su atributo (la palabra desordenada)
      * llama a la función pickRandomWordAndShuffle()
      */
-    private fun resetGame() {
+    fun resetGame() {
         /* Quitamos todas las palabras del conjunto de palabras usadas, pero confirmamos que
          no sea nula */
         useWords.let(MutableSet<String>::clear)
@@ -138,14 +143,62 @@ class GameViewModel : ViewModel() {
     fun checkUserGuess() {
         // En caso de que la palabra a adivinar sea igual a la palabra puesta por el usuario entra
         if (userGuess.equals(currentWord, ignoreCase = true)) {
-            // Cambiamos a true, que está bien en caso de acierto
-            _uiState.update { it.copy(isGuessedWordWrong = false) }
+            // Cambiamos a false, que está bien en caso de acierto e incrementamos el score en 20
+            //_uiState.update { it.copy(isGuessedWordWrong = false, score = it.score.plus(SCORE_INCREASE)) }
+            // Creamos un valor el cual representa el incremento de la puntuación del usuario
+            val updateScore = _uiState.value.score.plus(SCORE_INCREASE)
+            // Llamamos a la función 'updateGameState' para actualizar el estado del juego para adivinar la próxima palabra
+            updateGameState(updateScore)
             // En caso de que no sea igual entra
         } else {
-            // Cambiamos la varible de la data class a false, con update() la actualizamos
+            // Cambiamos la varible de la data class a true, con update() la actualizamos
             _uiState.update { it.copy(isGuessedWordWrong = true) }
         }
         // Una vez comprobado si es o no la palabra reseteamos el valor de la palabra metida por el usuario
+        updateUserGuess("")
+    }
+
+    /**
+     * Esta función va a actualizar (crear una nueva instacia de la data class) la data class
+     * con los valores preparados para empezar una nueva ronda, se hace mediante la función
+     * update() de este modo actualizamos el score, si la palabra es correcta (isGuessedWordWrong)
+     * y la palabra actual desordenada que el usuario tiene que adivinar (currentScrambledWord),
+     * incrementamos también el número de palabra por donde va
+     */
+    private fun updateGameState(updateScore: Int) {
+        /* En caso de que el número/índice de palabras del usuario sea distinta al máximo(10)
+         podemos actualizar el estado del juego */
+        if (_uiState.value.currentWordCount != MAX_NO_OF_WORDS) {
+            /* Creamos una nueva data class, en la cual se pone a false que haya error,
+         el score se incrementa, y llamamos a la función pickRandomWordAndShuffle()
+         para coger una nueva palabra aleatoria desordenada, incrementamos el número
+         de palabra por donde va */
+            _uiState.update {
+                it.copy(
+                    isGuessedWordWrong = false,
+                    score = updateScore,
+                    currentScrambledWord = pickRandomWordAndShuffle(),
+                    // Aquí incrememtamos el número de palabra en 1 con la función inc()
+                    currentWordCount = it.currentWordCount.inc()
+                )
+            }
+            // En caso de que se haya llegado al número máximo de palabras entra
+        } else {
+            // Se actualiza la variable de juego terminado a true
+            _uiState.update { it.copy(isGameOver = true) }
+        }
+    }
+
+    /**
+     * Esta función se salta la palabra actual, buscando así una nueva, manteniendo
+     * la puntuación, incrementando el número/índice de palabras por donde va el usuario
+     * y reseteando lo puesto por el usuario en el TextField
+     */
+    fun skipWord() {
+        /* Pasamos la misma puntuación, pero se busca una palabra nueva y se incrementa
+         el número de palabra por donde va el usuario */
+        updateGameState(_uiState.value.score)
+        // Reseteamos también lo introducido por el usuario en el TextField
         updateUserGuess("")
     }
 }
