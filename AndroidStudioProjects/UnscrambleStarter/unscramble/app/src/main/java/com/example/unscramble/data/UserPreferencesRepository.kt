@@ -53,7 +53,7 @@ class UserPreferencesRepository(
         * mutable, a menos que se vuelve a utilizar edit(), el documento es DataStore */
         dataStore.edit { preferences ->
             // Cambiamos el valor de los campos de la DataStore
-            preferences[LANGUAJE] = userPrefs.languaje
+            preferences[LANGUAJE] = userPrefs.language
             preferences[LEVEL_GAME] = userPrefs.levelGame
         }
     }

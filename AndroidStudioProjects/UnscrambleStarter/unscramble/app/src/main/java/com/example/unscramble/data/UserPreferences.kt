@@ -3,13 +3,13 @@ package com.example.unscramble.data
 // Creamos una data class donde vamos a almacenar las preferencias del usuario
 data class UserPreferences(
     // El idioma de la app
-    val languaje: String,
+    val language: String,
     // El nivel de dificultad
     val levelGame: Int
 )
 
 // Creamos una enum class que va a almacenar el lenguaje con sus abreviaciones
-enum class Languaje(val languaje: String) {
+enum class Language(val language: String) {
     ENGLISH("en"),
     SPANISH("es")
 }
