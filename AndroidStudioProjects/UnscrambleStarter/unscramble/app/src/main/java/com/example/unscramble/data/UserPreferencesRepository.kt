@@ -81,9 +81,9 @@ class UserPreferencesRepository(
         }.map { preferences ->
             // Guardamos el lenguaje, inglés en caso de que sea null
             val languaje = preferences[LANGUAJE] ?: "en"
-            // Guardamso el nivel, fácil en caso de que sea null
+            // Guardamos el nivel, fácil en caso de que sea null
             val levelGame = preferences[LEVEL_GAME] ?: LevelGame.EASY.level
-            // Devolevemos la data class con los datos obtenidos
+            // Devolvemos la data class con los datos obtenidos
             UserPreferences(languaje, levelGame)
         }
 }

@@ -27,7 +27,7 @@ import kotlinx.coroutines.launch
 
 // Creamos el StateFlow, el controlador de datos, aquí por lo general siempre va a ir una sola variable uiState
 class GameViewModel(
-    // Pasamos por parámetros el repository
+    // Pasamos por parámetros el repository (inyección de dependencias)
     private val userPreferencesRepository: UserPreferencesRepository
 ) : ViewModel() {
 
@@ -99,23 +99,30 @@ class GameViewModel(
 //        resetGame()
 //    }
 
-    //Bloque que se ejecuta con la creación del objeto.
+    // Es lo primero que se ejecuta al crear la clase (ViewModel)
     init {
+        // Se lanza una corrutina para el ViewModel
         viewModelScope.launch {
+            // Cargamos los datos de la dataStore a través del Repository
             userPreferencesRepository.userPrefs
+                // onStart() -> Este se ejecuta antes de que llegue el primer dato del flujo
                 .onStart {
+                    // Ponemos isLoading a true para que muestre una carga mientras que llegan los datos
                     _uiState.update { currentState ->
                         currentState.copy(isLoading = true)
                     }
                 }
-                .catch { e ->
+                // En caso de error se actualiza la uiState para guardar un mensaje de error
+                .catch { _ ->
                     _uiState.update { currentState ->
                         currentState.copy(
                             userMessage = UserMessage.ERROR_ACCESSING_DATASTORE
                         )
                     }
                 }
+                // collect() -> Para cuando los datos ya han llegado pues realiza una acción
                 .collect { preferences ->
+                    // En este caso es cambiar las preferencias del jugador
                     updateStateSettings(preferences.language, preferences.levelGame)
                 }
         }
@@ -347,16 +354,25 @@ class GameViewModel(
     }
 
 
+    /**
+     * Esta función va a cambiar las preferencias del usuario,
+     * es decir el lenguaje y el nivel de dificultad del juego
+     */
     fun setSettings(
         language: String = Language.ENGLISH.language,
         levelGame: Int = LevelGame.EASY.level
     ) {
-        viewModelScope.launch() {
+        /* viewModelScope -> Es un entorno atado a ViewModel;
+        * launch {} -> Lanza una corrutina sin bloquear el hilo principal */
+        viewModelScope.launch {
             try {
+                // Llamamos a la función savePreferences() para cambiar el lenguaje e idioma
                 userPreferencesRepository.savePreferences(
                     UserPreferences(language, levelGame)
                 )
+                // En caso de error entra
             } catch (e: Exception) {
+                // Actualizamos el mensaje de error
                 _uiState.update { currentState ->
                     currentState.copy(
                         userMessage = UserMessage.ERROR_WRITING_DATASTORE
