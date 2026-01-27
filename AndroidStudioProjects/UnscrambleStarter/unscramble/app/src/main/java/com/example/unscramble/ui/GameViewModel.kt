@@ -122,6 +122,17 @@ class GameViewModel(
                 }
                 // collect() -> Para cuando los datos ya han llegado pues realiza una acción
                 .collect { preferences ->
+                    // Actualiza los datos de la GameUIState
+//                    _uiState.update { currentState ->
+//                        currentState.copy(
+//                            // Ponemos el lenguaje de las preferencias
+//                            language = preferences.language,
+//                            // Ponemos el nivel de las preferencias
+//                            levelGame = preferences.levelGame,
+//                            // Está cargando pasa a false para quitar el spiner de carga, ya que han venido los datos
+//                            isLoading = false
+//                        )
+//                    }
                     // En este caso es cambiar las preferencias del jugador
                     updateStateSettings(preferences.language, preferences.levelGame)
                 }
@@ -267,33 +278,55 @@ class GameViewModel(
 
     // A PARTIR DE AQUÍ LAS FUNCIONES COPIADAS COMO DICE EL LABORATORIO, LAS FUNCIONES MODIFICADAS
 
+    /**
+     * Esta funcón va a seleccionar una palabra random en inglés o español
+     * dependiendo del lenguaje pasada por parámetros
+     */
     private fun pickRandomWord(language: String): String {
-        // Continue picking up a new random word until you get one that hasn't been used before
+        // Se elige una palabra aleatoria dependiendo del leguaje seleccionado
         val word =
             if (language == Language.SPANISH.language) AllSpanishWords.random() else allWords.random()
         return if (uiState.value.usedWords.contains(word)) {
+            // En caso de que la palabra ya se haya seleccionado, llamamos otra vez a la función (recursiva)
             pickRandomWord(language)
+            // En caso de que la palabta esté bien, pues se elige esa palabra
         } else {
+            // La palabra nueva a devolver
             word
         }
     }
 
+    /**
+     * Esta función va a desordenar la palabra elegida
+     * aleatoriamente
+     */
     private fun shuffleCurrentWord(word: String): String {
+        // La palabra pasa a ser un array de char para poder llamar a la función shuffle()
         val tempWord = word.toCharArray()
-        // Scramble the word
+        // Desordenamos los char del array
         tempWord.shuffle()
+        // Mientras sea la misma palabra ordenada sigue desordenando
         while (String(tempWord) == word) {
             tempWord.shuffle()
         }
+        // Devolvemos la palabra desordenada
         return String(tempWord)
     }
 
+    /**
+     * Esta función reinicia el estado del juego
+     */
     fun updateStateSettings(language: String, levelGame: Int) {
+        // Se elige una palabra random()
         val word = pickRandomWord(language)
+        // Se actualiza el estado del juego con update()
         _uiState.update { currentState ->
             currentState.copy(
+                // La palabra elegida
                 currentWord = word,
+                // La palabra desordenada
                 currentScrambledWord = shuffleCurrentWord(word),
+                // Se reinicia las palabras usadas
                 usedWords = mutableListOf(word),
                 language = language,
                 levelGame = levelGame,
@@ -304,52 +337,83 @@ class GameViewModel(
         }
     }
 
+    /**
+     * Esta función llama a la función anterior para reiniciar el juego
+     */
     fun resetGame() {
         updateStateSettings(uiState.value.language, uiState.value.levelGame)
     }
 
+    /**
+     * Esta función comprueba que la palabra introducida por el usuario sea la correcta
+     * en caso de que sí, se incrementa el SCORE, en caso de que no se muestra error
+     * en el TextFormField
+     */
     fun checkUserGuess() {
+        // En caso de que sea la palabra
         if (userGuess.equals(uiState.value.currentWord, ignoreCase = true)) {
+            // Se actualiza el score
             val updatedScore = _uiState.value.score.plus(SCORE_INCREASE)
             updateGameState(updatedScore)
         } else {
-            // Si falla muestra un error.
+            // Si falla se muestra un error
             _uiState.update { currentState ->
                 currentState.copy(isGuessedWordWrong = true)
             }
         }
-        // Reset user guess
+        // Reseteamos la palabra
         updateUserGuess("")
     }
 
+    /**
+     * Esta función actualiza el estado del juego dependiendo de si ha terminado
+     * o no el juego lo hará de una forma u otra
+     */
     private fun updateGameState(updatedScore: Int) {
+        // Comrueba que las palabras usadas sean las mismas que el nivel del juego (el número), entra
         if (uiState.value.usedWords.size == uiState.value.levelGame) {
-            //Last round in the game, update isGameOver to true, don't pick a new word
+            // Actualiza el estado
             _uiState.update { currentState ->
                 currentState.copy(
+                    // La palabra es correcta
                     isGuessedWordWrong = false,
+                    // Se incrementa el SCORE
                     score = updatedScore,
+                    // Se termina el juego (dialog)
                     isGameOver = true
                 )
             }
+            // En caso de que no haya terminado las rondas
         } else {
+            // Actualiza
             _uiState.update { currentState ->
+                // Se elige otra palabra random
                 val word = pickRandomWord(currentState.language)
                 currentState.copy(
+                    // La palabra está bien
                     isGuessedWordWrong = false,
+                    // Se añade la palabra usada
                     usedWords = currentState.usedWords.apply { add(word) },
+                    // Se actualiza la palabra
                     currentWord = word,
+                    // Se desordenada la palabra
                     currentScrambledWord = shuffleCurrentWord(word),
+                    // Se incrementa el score
                     score = updatedScore,
+                    // Se incrementa el índice de la palabra por la que va el usuario
                     currentWordCount = currentState.currentWordCount.inc()
                 )
             }
         }
     }
 
+    /**
+     * Esta función se salta la palabra actual
+     */
     fun skipWord() {
+        // El score se mantiene
         updateGameState(_uiState.value.score)
-        //Borra el texto.
+        //Borra el texto
         updateUserGuess("")
     }
 

@@ -6,7 +6,12 @@ data class UserPreferences(
     val language: String,
     // El nivel de dificultad
     val levelGame: Int
-)
+) {
+    companion object {
+        // Creamos la clave 'SETTINGS_FILE' es el nombre para la creación del fichero
+        const val SETTINGS_FILE = "settings"
+    }
+}
 
 // Creamos una enum class que va a almacenar el lenguaje con sus abreviaciones
 enum class Language(val language: String) {

@@ -3,6 +3,7 @@ package com.example.unscramble.unscramblerelease
 import android.app.Application
 import android.content.Context
 import androidx.datastore.preferences.preferencesDataStore
+import com.example.unscramble.data.UserPreferences
 import com.example.unscramble.data.UserPreferencesRepository
 
 /* Aquí creamos el valor que va a contener la DataStore, la clase 'Context' es el contexto
@@ -12,7 +13,7 @@ import com.example.unscramble.data.UserPreferencesRepository
 * preferencesDataStore(), el nombre que le pasamos por parámetros es el nombre que va a tener el fichero
 * que contiene la información en el móvil, la DataStore tiene que vivir globalmente en la app, por eso
 * la colocamos fuera de la clase */
-val Context.dataStore by preferencesDataStore(name = "SETTINGS_FILE")
+val Context.dataStore by preferencesDataStore(name = UserPreferences.SETTINGS_FILE)
 
 /* Esta clase funciona como contenedor en este caso de UserPreferencesRepository, este
 * es necesario para no crear muchas instancias de la misma clase (Repository) que es la que
