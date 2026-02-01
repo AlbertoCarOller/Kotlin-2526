@@ -84,7 +84,7 @@ interface WordsDAO {
      * ejecutar la consulta
      */
     @Query("select * from words where language = :language order by random() limit :number")
-    fun getSomeRandomWordsByLanguage(language: String, number: Int)
+    fun getSomeRandomWordsByLanguage(language: String, number: Int): Flow<List<WordModel>>
 
     /**
      * Esta función va a devolver una lista con con palabras ordenadas

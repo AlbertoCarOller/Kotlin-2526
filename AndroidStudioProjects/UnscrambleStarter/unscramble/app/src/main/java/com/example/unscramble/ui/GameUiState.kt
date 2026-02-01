@@ -28,11 +28,16 @@ data class GameUiState(
     // Creamos una variable que va a indicar por el número de palabra que vamos
     val currentWordCount: Int = 1,
     // Creamos una variable que va a indicar si el juego ha terminado o continua
-    val isGameOver: Boolean = false
+    val isGameOver: Boolean = false,
+    /* La lista de palabras solicitadas para el juego, cuando el usuario acierte sacamos una palabra
+     de la lista, cuando esté vacía termina el juego */
+    val wordsGame: MutableList<String> = mutableListOf()
 )
 
 // Creamos una enum class que va a contener dos tipos de errores
 enum class UserMessage {
     ERROR_ACCESSING_DATASTORE,
-    ERROR_WRITING_DATASTORE
+    ERROR_WRITING_DATASTORE,
+    // Añadimos un nuevo error
+    ERROR_GETTING_WORDS
 }
