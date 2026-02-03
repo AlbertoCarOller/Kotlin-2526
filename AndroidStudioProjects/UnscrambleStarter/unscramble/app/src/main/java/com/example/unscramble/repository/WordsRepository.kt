@@ -20,6 +20,10 @@ class WordsRepository(
         wordsDAO.insert(word)
     }
 
+    override suspend fun insertWordList(wordList: List<WordModel>) {
+        wordsDAO.insertWordList(wordList)
+    }
+
     override suspend fun update(word: WordModel) {
         wordsDAO.update(word)
     }

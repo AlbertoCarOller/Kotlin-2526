@@ -5,9 +5,7 @@ import android.content.Context
 import androidx.datastore.preferences.preferencesDataStore
 import com.example.unscramble.data.UserPreferences
 import com.example.unscramble.data.UserPreferencesRepository
-import com.example.unscramble.localdatabase.GamesDao
 import com.example.unscramble.localdatabase.UnscrambleDatabase
-import com.example.unscramble.localdatabase.WordsDAO
 import com.example.unscramble.repository.GamesRepository
 import com.example.unscramble.repository.WordsRepository
 

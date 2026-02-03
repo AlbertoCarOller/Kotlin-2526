@@ -15,6 +15,10 @@ import com.example.unscramble.data.LevelGame
 import com.example.unscramble.data.SCORE_INCREASE
 import com.example.unscramble.data.UserPreferences
 import com.example.unscramble.data.UserPreferencesRepository
+import com.example.unscramble.data.getEnglishWords
+import com.example.unscramble.data.getSpanishWords
+import com.example.unscramble.datamodel.GameModel
+import com.example.unscramble.repository.GamesRepository
 import com.example.unscramble.repository.WordsRepository
 import com.example.unscramble.unscramblerelease.UnscrambleReleaseApplication
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -29,13 +33,16 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.util.Date
 
 // Creamos el StateFlow, el controlador de datos, aquí por lo general siempre va a ir una sola variable uiState
 class GameViewModel(
     // Pasamos por parámetros el repository (inyección de dependencias)
     private val userPreferencesRepository: UserPreferencesRepository,
     // Pasamos el repositorio de las palabras, para poder comunicarnos con la base de datos
-    private val wordsRepository: WordsRepository
+    private val wordsRepository: WordsRepository,
+    // Pasamos el repositorio de los juegos, para poder comunicarnos con la base de datos
+    private val gamesRepository: GamesRepository
 ) : ViewModel() {
 
     /* Creamos un companion object para que antes de iniciar el viewModel poder
@@ -52,7 +59,11 @@ class GameViewModel(
             // initializer {} -> Este indica como se debe de crear un ViewModel (dentro de viewModelFactory)
             initializer {
                 val application = (this[APPLICATION_KEY] as UnscrambleReleaseApplication)
-                GameViewModel(application.userPreferencesRepository, application.wordsRepository)
+                GameViewModel(
+                    application.userPreferencesRepository,
+                    application.wordsRepository,
+                    application.gamesRepository
+                )
             }
         }
     }
@@ -95,6 +106,10 @@ class GameViewModel(
     * el proceso sería mucho más complejo y costoso ya que habría que hacer la copia del GameUiState
     * por cada palabra que metiera el usuario */
     var userGuess by mutableStateOf("")
+        private set
+
+    // Creamos la variable que va a guardar el nombre del usuario
+    var userName by mutableStateOf("")
         private set
 
     /* Al crear esta clase lo primero a lo que se llama gracias al 'init' es la función
@@ -151,17 +166,27 @@ class GameViewModel(
         viewModelScope.launch {
             // Flujo de estado transformado de lista de WordModel a lista de strings.
             val wordsFlow: StateFlow<List<String>> =
+                // Cada vez que haya un cambio en las preferencias se ejecuta este flujo y bueno siempre la primera vez
                 userPreferencesRepository.userPrefs
                     //Toma el flujo de preferencias y lo mapea a un flujo de lista de WordModel.
                     //Cada vez que haya un cambio en las preferencias, se obtendrán nuevos WordModel.
                     .flatMapLatest { preferences ->
-                        wordsRepository.getSomeRandomWordsByLanguage(
+                        // LO PONEMOS AQUÍ PORQUE EL FLUJO SE EJECUTA CADA VEZ QUE HAY UN CAMBIO DE PREFERECIAS DEL USUARIO
+                        // Insertamos la lista de palabras en el lenguaje que tenga seleccionado el usuario
+                        wordsRepository.insertWordList(
+                            // Comprobamos si el lenguaje del usuario está en español o inglés para seleccionar unas palabras u otras
+                            if (preferences.language == "en") getEnglishWords()
+                            else getSpanishWords()
+                        )
+                        // Devuelve un flujo (Flow<List<WordModel>>) con las palabras en un determinado idioma
+                        wordsRepository.getSomeRandomWordsByLanguage( // 'return'
                             preferences.language,
                             preferences.levelGame
                         )
                     }
                     //Transforma la lista de WordModel en una lista de strings.
-                    .map { wordList ->
+                    .map { wordList -> // Flow<List<WordModel>>
+                        // Lo transformamos a una lista de String obteniendo solo el título (la palabra en sí)
                         wordList.map { it.title }
                     }
                     //Captura excepciones y actualiza el estado de la interfaz de usuario.
@@ -175,19 +200,21 @@ class GameViewModel(
                         emit(emptyList()) // Emitir una lista vacía en caso de error
                     }
                     //Convierte el flujo en un flujo de estado con la lista de palabras.
-                    .stateIn(
+                    .stateIn( // Transforma un flujo en un flujo de estado (StateFlow)
                         scope = viewModelScope,
                         started = SharingStarted.WhileSubscribed(5000),
                         initialValue = emptyList()
                     )
-
             //Combina preferencias y lista de palabras en un solo flujo de estado.
             userPreferencesRepository.userPrefs
+                // Con combine() combina el flujo de las preferencias con el de wordsFlow, ahora se trabaja con ellos dos
                 .combine(wordsFlow) { preferences, words ->
+                    // Se crea un Pair (Par) con estos conjuntos de datos
                     Pair(preferences, words)
                 }
                 //Inicialmente muestra un estado de carga.
                 .onStart {
+                    // Se actualiza el estado del juego para que isLoading sea true
                     _uiState.update { currentState ->
                         currentState.copy(isLoading = true)
                     }
@@ -195,27 +222,33 @@ class GameViewModel(
                 //Captura excepciones y actualiza el estado de la interfaz de usuario.
                 .catch { _ ->
                     _uiState.update { currentState ->
+                        // En caso de que haya excepciones en este punto, se guarda el mensaje de usuario para mostrar el mensaje
                         currentState.copy(
                             userMessage = UserMessage.ERROR_ACCESSING_DATASTORE,
+                            // Quitamos la carga
                             isLoading = false
                         )
                     }
                 }
                 //Actualiza el estado de la interfaz de usuario con las preferencias y las palabras.
-                .collect { (preferences, words) ->
+                .collect { (preferences, words) -> // Recolecta el flujo
                     Log.d("GameViewModel", "Entra a CollectCombined: $words")
                     // Si no hay palabras, actualiza el estado de la interfaz de usuario con un mensaje de error.
                     if (words.isEmpty()) {
                         _uiState.update { currentState ->
                             currentState.copy(
+                                // En caso de error, mostrará la imagen
                                 userMessage = UserMessage.ERROR_GETTING_WORDS,
                                 isLoading = false
                             )
                         }
+                        // En caso de que sí estén las palabras entra
                     } else {
                         //Actualiza el estado de la interfaz con las palabras del flujo y las opciones de preferencia.
                         updateState(
+                            // Transforma las palabras a una mutableList
                             words.toMutableList(),
+                            // Actualiza las preferencias de lenguaje y el nivel del juego
                             preferences.language,
                             preferences.levelGame
                         )
@@ -592,5 +625,40 @@ class GameViewModel(
                 }
             }
         }
+    }
+
+    /**
+     * Esta función va a guarda en la base de datos (insert)
+     * el juego que acabamos de crear, es el juego que ha estado jugando
+     * el usuario, como 'insertGame' es una corrutina debo de lanzar un
+     * launch {} para que sea autónoma y no afecte a Compose directamente
+     * al llamar a la función para ellos se crean los launch {}
+     */
+    fun saveGame() {
+        /* Se hace en el lauch el guardado en la base de datos porque insertGame()
+        * es una función suspendida y es tímida necesita de una burbuja, un entorno
+        * seguro, ese es el launch {} */
+        viewModelScope.launch {
+            // Creamos el juego
+            val game = GameModel(
+                score = _uiState.value.score,
+                date = Date().toString(),
+                rightWords = "",
+                wrongWords = "",
+                username = userName
+            )
+            // Guardamos el juego en la base de datos
+            gamesRepository.insertGame(game)
+            // Guardamos el juego en la lista del uiState
+            _uiState.value.listGame.add(game)
+        }
+    }
+
+    /**
+     * Esta función va a actualizar el nombre del jugador
+     * por el que se ha pasado por parámetros
+     */
+    fun updateUserName(newName: String) {
+        userName = newName
     }
 }

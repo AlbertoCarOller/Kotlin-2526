@@ -2,6 +2,8 @@ package com.example.unscramble.ui
 
 import com.example.unscramble.data.Language
 import com.example.unscramble.data.LevelGame
+import com.example.unscramble.datamodel.GameModel
+import com.example.unscramble.datamodel.WordModel
 
 // Creamos el uiState, contiene los valores (val) de la UI
 data class GameUiState(
@@ -31,7 +33,9 @@ data class GameUiState(
     val isGameOver: Boolean = false,
     /* La lista de palabras solicitadas para el juego, cuando el usuario acierte sacamos una palabra
      de la lista, cuando esté vacía termina el juego */
-    val wordsGame: MutableList<String> = mutableListOf()
+    val wordsGame: MutableList<String> = mutableListOf(),
+    // Creamos una lista donde guardar todos los juegos
+    val listGame: MutableList<GameModel> = mutableListOf()
 )
 
 // Creamos una enum class que va a contener dos tipos de errores

@@ -13,6 +13,8 @@ interface WordsInterface {
 
     // Se crean las firmas de las funciones
     suspend fun insert(word: WordModel)
+
+    suspend fun insertWordList(wordList: List<WordModel>)
     suspend fun update(word: WordModel)
     suspend fun delete(word: WordModel)
     suspend fun clearWords()

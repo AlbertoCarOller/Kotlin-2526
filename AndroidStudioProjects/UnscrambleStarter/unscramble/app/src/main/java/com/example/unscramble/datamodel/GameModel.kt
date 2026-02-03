@@ -17,4 +17,5 @@ data class GameModel(
     val rightWords: String, // Creamos las palabras correctas
     @ColumnInfo(name = "wrong_words")
     val wrongWords: String, // Creamos las palabras incorrectas
+    val username: String // Creamos el username del jugador de este juego
 )

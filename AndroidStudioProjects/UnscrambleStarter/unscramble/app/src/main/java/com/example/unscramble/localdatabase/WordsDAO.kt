@@ -15,6 +15,9 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface WordsDAO {
 
+    /* LAS OPERACIONES SON SUSPEND YA QUE ESTE TIPO DE OPERACIONES, ESCRITURA Y DEMÁS TARDAN UN TIEMPO
+     EN CARGAR Y NO QUEREMOS BLOQUEAR EL HILO PRINCIPAL */
+
     /* Con @Insert le decimos a la función que inserte la palabra (data class) pasada por parámetros,
     * en caso de que haya un conflicto 'onConflict' su estategia va a ser abortar 'OnConflictStrategy.ABORT' */
     @Insert(onConflict = OnConflictStrategy.ABORT)
@@ -22,6 +25,16 @@ interface WordsDAO {
      * Creamos una función (corrutina) la cual recibe una palabra para ser insertada en la bd
      */
     suspend fun insert(word: WordModel)
+
+    /**
+     * Esta función va a insertar todos los WordModel (palabras)
+     * de la lista, ROOM es suficientemente inteligente como para
+     * saber que debe de recorrer la lista e ir insertando cada
+     * campo dentro de esta, en caso de que ya existan las palabras
+     * se hace un ignore para que no lance exception
+     */
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insertWordList(wordList: List<WordModel>)
 
     /* Con la etiqueta @Delete marcamos esta función de borrado, es decir, se borra
     * la palabra pasada por parámetros */
