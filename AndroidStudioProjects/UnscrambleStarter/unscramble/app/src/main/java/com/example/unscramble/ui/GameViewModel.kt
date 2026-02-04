@@ -255,6 +255,12 @@ class GameViewModel(
                     }
                 }
         }
+        // Guardamos en la lista de local lo que está en la base de datos
+        viewModelScope.launch {
+            gamesRepository.getAllGames.collect { list ->
+                _uiState.update { it.copy(listGame = list.toMutableList()) }
+            }
+        }
     }
 
     /**
@@ -649,8 +655,16 @@ class GameViewModel(
             )
             // Guardamos el juego en la base de datos
             gamesRepository.insertGame(game)
-            // Guardamos el juego en la lista del uiState
-            _uiState.value.listGame.add(game)
+            // Guardamos en la lista
+            _uiState.update { currentState ->
+                val copiaList = currentState.listGame
+                // Añadimos el juego
+                copiaList.add(game)
+                // Creamos la copia para actualizar la GameUiState
+                currentState.copy(listGame = copiaList)
+            }
+            // Limpiamos el userName
+            userName = ""
         }
     }
 

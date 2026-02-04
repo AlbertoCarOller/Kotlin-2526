@@ -23,8 +23,8 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import com.example.unscramble.ui.GameScreen
 import com.example.unscramble.ui.theme.UnscrambleTheme
+import com.example.unscramble.ui.viaje
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,8 +37,9 @@ class MainActivity : ComponentActivity() {
                     // Ocupa el espacio disponible
                     modifier = Modifier.fillMaxSize(),
                 ) {
-                    // La 'GameScreen' es la pantalla principal y única
-                    GameScreen()
+                    // La 'GameScreen' es la pantalla principal y única (ahora no)
+                    // Utilizamos el compable con los datos de navegación
+                    viaje()
                 }
             }
         }

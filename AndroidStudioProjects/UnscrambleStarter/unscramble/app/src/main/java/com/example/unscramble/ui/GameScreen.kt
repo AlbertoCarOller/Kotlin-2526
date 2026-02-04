@@ -77,7 +77,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.lifecycle.viewmodel.viewModelFactory
+import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.unscramble.R
 import com.example.unscramble.data.Language
@@ -101,7 +104,8 @@ fun GameScreen(
     * tengamos la clase viewModel creada en nuestro proyecto, saltará excepción porque la fábrica
     * inteligente no sabría donde mirar ni como crear, no crearía un viewModel genérico ni nada así */
     // Ahora le pasamos a viewModel() el Factory para que sepa constrirse con el Repository
-    gameViewModel: GameViewModel = viewModel(factory = GameViewModel.Factory)
+    gameViewModel: GameViewModel = viewModel(factory = GameViewModel.Factory),
+    navController: NavController,
 ) {
     // Creamos una variable boolean que va a estar en false que va a controlar si se muestra o no un Dialog
     var isSettingsDialogVisible: Boolean by remember { mutableStateOf(false) }
@@ -143,7 +147,9 @@ fun GameScreen(
             FinalScoreDialog(
                 gameUiState.score, onPlayAgain = { gameViewModel.resetGame() },
                 onValueChange = { gameViewModel.updateUserName(it) },
-                userName = gameViewModel.userName
+                userName = gameViewModel.userName,
+                navController = navController,
+                gameViewModel = gameViewModel
             )
         }
 
@@ -244,7 +250,6 @@ fun GameScreen(
                     )
                 }
             }
-
             // Muestra la puntuación actual del usuario, pasamos la puntuación del usuario
             GameStatus(score = gameUiState.score, modifier = Modifier.padding(20.dp))
         }
@@ -386,7 +391,9 @@ private fun FinalScoreDialog(
     onPlayAgain: () -> Unit,
     modifier: Modifier = Modifier,
     onValueChange: (String) -> Unit,
-    userName: String
+    userName: String,
+    navController: NavController,
+    gameViewModel: GameViewModel
 ) {
     val activity = (LocalContext.current as Activity)
 
@@ -411,8 +418,12 @@ private fun FinalScoreDialog(
         dismissButton = {
             TextButton(
                 onClick = {
+                    // Guardamos el registro del juego
+                    gameViewModel.saveGame()
+                    // Navegamos a la pantalla de ranking
+                    navController.navigate("rankingScreen")
                     // finish() -> Finaliza la aplicación
-                    activity.finish()
+                    //activity.finish()
                 }
             ) {
                 Text(text = stringResource(R.string.exit))
@@ -421,7 +432,11 @@ private fun FinalScoreDialog(
         // Se muestra el botón para volver a jugar al juego
         confirmButton = {
             // Le pasamos la función lambda 'onPlayAgain'
-            TextButton(onClick = onPlayAgain) {
+            TextButton(onClick = {
+                // Guaramos el juego
+                gameViewModel.saveGame()
+                onPlayAgain()
+            }) {
                 Text(text = stringResource(R.string.play_again))
             }
         }
@@ -534,60 +549,76 @@ fun SettingsDialog(
 
 @Composable
 fun HistorialScreen(listGame: MutableList<GameModel>) {
-    // Obtenemos el context y lo transformamos en una Activity
-    val activity = (LocalContext.current as Activity)
-    // Ponemos el título
-    Text(
-        text = stringResource(R.string.tituloRanking),
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 6.dp),
-        fontSize = 18.sp
-    )
-    TextButton(
-        modifier = Modifier.fillMaxWidth(), colors = ButtonDefaults.buttonColors(
-            containerColor = Color.Blue,
-            contentColor = Color.White
-        ),
-        // Al pulsar cerramos la app
-        onClick = { activity.finish() }) {
-        Text(stringResource(R.string.exit))
-    }
-    LazyColumn(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(horizontal = 10.dp, vertical = 6.dp)
-    ) {
-        items(listGame) { juego ->
-            Card(modifier = Modifier.fillMaxWidth()) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 4.dp)
-                        .align(Alignment.CenterHorizontally)
-                ) {
-                    // El username del juegador en el juego
-                    Text(text = juego.username)
-                    // El score del juego
-                    Text(text = juego.score.toString())
-                    // La fecha en la que se guardó el juego
-                    Text(text = juego.date)
+    Column(modifier = Modifier.fillMaxSize()) {
+        // Obtenemos el context y lo transformamos en una Activity
+        val activity = (LocalContext.current as Activity)
+        // Ponemos el título
+        Text(
+            text = stringResource(R.string.tituloRanking),
+            modifier = Modifier
+                .fillMaxWidth()
+                // Para mantener el safeArea
+                .safeDrawingPadding()
+                .padding(vertical = 6.dp),
+            fontSize = 18.sp
+        )
+        TextButton(
+            modifier = Modifier.fillMaxWidth(), colors = ButtonDefaults.buttonColors(
+                containerColor = Color.Blue,
+                contentColor = Color.White
+            ),
+            // Al pulsar cerramos la app
+            onClick = { activity.finish() }) {
+            Text(stringResource(R.string.exit))
+        }
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 10.dp, vertical = 6.dp)
+        ) {
+            items(listGame) { juego ->
+                Card(modifier = Modifier.padding(6.dp).fillMaxWidth()) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 4.dp)
+                            .align(Alignment.CenterHorizontally)
+                    ) {
+                        // El username del juegador en el juego
+                        Text(text = juego.username)
+                        // El score del juego
+                        Text(text = juego.score.toString())
+                        // La fecha en la que se guardó el juego
+                        Text(text = juego.date)
+                    }
                 }
-            }
 
+            }
         }
     }
 }
 
+// Le pasamos directamente el parametro, la lista, para no complicarlo mucho
 @Composable
-fun navegacion() {
+fun viaje() {
+    // Creamos el viewModel aquí para que sea compartido por todas las pantallas
+    val viewModel: GameViewModel = viewModel(factory = GameViewModel.Factory)
     // Creamos el controlador de la navegación
     val navController = rememberNavController()
     // Creamos el navHost (el contenedor para vijar entre pantallas)
     NavHost(navController = navController, startDestination = "gameScreen") {
         // La pantalla de la GameScreen
-        Composable()
+        composable("gameScreen") {
+            // Pasamos el navegador para navegar a la pantalla de Ranking y el viewModel compartido
+            GameScreen(navController = navController, gameViewModel = viewModel)
+        }
         // La pantalla de los Ranking
+        composable("rankingScreen") {
+            // Por cada cambio los recogemos para que cambie la pantalla cada vez que pase esto
+            val uiState by viewModel.uiState.collectAsState()
+            // Le pasamos la lista de juegos
+            HistorialScreen(uiState.listGame)
+        }
     }
 }
 
