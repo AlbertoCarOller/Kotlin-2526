@@ -22,6 +22,7 @@ class HeroApiConfig {
         // Configura el objeto Json con algunas opciones (por ejemplo, ignorar claves desconocidas)
         // Este es el traducto de JSON a Kotlin, transforma los JSON a clases de Kotlin (data clases)
         private val json = Json {
+            // Ignora los campos desconocidos al transformar el JSON a una data clase
             ignoreUnknownKeys = true
             // Puedes configurar otras opciones según lo necesites
         }
