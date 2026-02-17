@@ -156,4 +156,47 @@ class HeroRepository(private val apiService: HeroApiService) {
             Result.failure(Exception("Ha ocurrido un error: " + e.message))
         }
     }
+
+    /**
+     * Esta función va a añadir héroes en una lista
+     * el número de veces que se ha pasado por parámetros
+     */
+    suspend fun getSomeRandHeroes(num: Int): Result<List<Hero>> {
+        return try {
+            // Creamos una lista de los héroes aleatorios
+            val heroList: MutableList<Hero> = mutableListOf()
+            // Añadimos héroes de forma aleatoria hasta que la lista tenga el número de héroes pedidos
+            while (heroList.size != num) {
+                val hero: Hero? = getRadomHero().getOrNull()
+                // Se añade cuando la respuesa es distinta de null
+                if (hero != null) {
+                    heroList.add(hero)
+                }
+            }
+            Result.success(heroList.toList())
+        } catch (e: Exception) {
+            Result.failure(Exception("Ha ocurrido un error: " + e.message))
+        }
+    }
+
+    /**
+     * Esta función/flujo va a devolver cada 5 segundos una lista
+     * de héroes aleatorios
+     */
+    fun getSomeRandHeroesUpdates(numHeroes: Int): Flow<Result<List<Hero>>> =
+        // Se le indica que es un flujo por eso ya no debe indicarse que es Suspendida
+        flow {
+            // Bucle infinito
+            while (true) {
+                try {
+                    // Emitimos/devolvemos la lista de héroes
+                    emit(getSomeRandHeroes(numHeroes))
+                } catch (e: Exception) {
+                    emit(Result.failure(Exception("Ha ocurrido un error: " + e.message)))
+                }
+                // Hay una espera de 5 segundos
+                delay(5_000L)
+            }
+            // Flujo de escritura/lectura
+        }.flowOn(Dispatchers.IO)
 }
